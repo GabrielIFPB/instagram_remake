@@ -5,7 +5,6 @@
 	android:layout_height="match_parent"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@android:color/white"
-
 	tools:context=".login.presentation.LoginActivity">
 
 	<ScrollView
@@ -59,6 +58,7 @@
 			<androidx.appcompat.widget.AppCompatButton
 				android:id="@+id/login_button_enter"
 				style="@style/InstaFormButton"
+				android:enabled="false"
 				android:text="@string/enter" />
 
 			<FrameLayout
