@@ -13,4 +13,6 @@
 	<color name="blueDisable">#C3E0FA</color>
 	<color name="blueEnable">#3897F0</color>
 
+	<color name="red">#FF0000</color>
+
 </resources>
