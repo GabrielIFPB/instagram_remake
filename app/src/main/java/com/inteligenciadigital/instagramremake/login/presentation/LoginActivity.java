@@ -14,7 +14,7 @@ import com.inteligenciadigital.instagramremake.R;
 
 public class LoginActivity extends AppCompatActivity {
 
-	private TestButton buttonEnter;
+	private LoadingButton buttonEnter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
