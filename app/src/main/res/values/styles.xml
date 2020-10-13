@@ -4,17 +4,25 @@
 		<item name="android:layout_marginStart">36dp</item>
 		<item name="android:layout_marginEnd">36dp</item>
 	</style>
-	
-	<style name="InstaFormEditTextInput" parent="FormContainer">
-		<item name="android:layout_width">match_parent</item>
-		<item name="android:layout_height">wrap_content</item>
-		<item name="android:layout_marginBottom">20dp</item>
-	</style>
 
 	<style name="InstaTextViewBase">
 		<item name="android:textColor">@color/grayText</item>
 		<item name="android:layout_width">wrap_content</item>
 		<item name="android:layout_height">wrap_content</item>
+	</style>
+
+	<style name="InstaTextViewVaseForm" parent="FormContainer">
+		<item name="android:textColor">@color/colorAccent</item>
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:textAlignment">center</item>
+		<item name="android:layout_marginBottom">24dp</item>
+	</style>
+	
+	<style name="InstaFormEditTextInput" parent="FormContainer">
+		<item name="android:layout_width">match_parent</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginBottom">20dp</item>
 	</style>
 
 	<style name="InstaFormEditText">

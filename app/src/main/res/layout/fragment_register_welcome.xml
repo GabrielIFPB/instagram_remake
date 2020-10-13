@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:orientation="vertical"
+	android:layout_width="match_parent"
+	tools:context=".register.presentation.RegisterActivity"
+	tools:showIn="@layout/activity_register"
+	android:layout_height="match_parent">
+
+	<TextView
+		style="@style/InstaTextViewVaseForm"
+		android:text="@string/welcome_to_instagram" />
+
+	<com.inteligenciadigital.instagramremake.login.presentation.LoadingButton
+		android:id="@+id/register_button_next"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		app:text="@string/next" />
+
+	<androidx.appcompat.widget.AppCompatTextView
+		android:id="@+id/register_text_view_login"
+		style="@style/InstaTextViewBase"
+		android:layout_width="match_parent"
+		android:gravity="center"
+		android:layout_marginTop="200dp"
+		android:padding="24dp"
+		android:text="@string/agree_terms_policy" />
+
+</LinearLayout>
