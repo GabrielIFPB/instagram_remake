@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
 
 public class LoginActivity extends AppCompatActivity {
 

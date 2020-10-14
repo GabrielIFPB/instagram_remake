@@ -2,8 +2,7 @@
 <merge xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools">
 
-	<androidx.appcompat.widget.AppCompatButton
-		style="@style/InstaFormButton" />
+	<androidx.appcompat.widget.AppCompatButton style="@style/InstaFormButton" />
 
 	<ProgressBar
 		android:layout_width="36dp"
