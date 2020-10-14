@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:background="@android:color/white"
 	tools:context=".login.presentation.LoginActivity">
 
 	<ScrollView
-		android:layout_gravity="bottom"
 		android:layout_width="match_parent"
-		android:layout_marginBottom="16dp"
-		android:layout_height="wrap_content">
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom"
+		android:layout_marginBottom="16dp">
 
 		<LinearLayout
 			android:layout_width="match_parent"
@@ -31,7 +31,7 @@
 				android:id="@+id/login_edit_text_email_input"
 				style="@style/InstaFormEditTextInput"
 				app:errorTextAppearance="@style/InstaFormEditTextError"
-				app:hintEnabled="false" >
+				app:hintEnabled="false">
 
 				<androidx.appcompat.widget.AppCompatEditText
 					android:id="@+id/login_edit_text_email"
@@ -45,7 +45,7 @@
 				android:id="@+id/login_edit_text_password_input"
 				style="@style/InstaFormEditTextInput"
 				app:errorTextAppearance="@style/InstaFormEditTextError"
-				app:hintEnabled="false" >
+				app:hintEnabled="false">
 
 				<androidx.appcompat.widget.AppCompatEditText
 					android:id="@+id/login_edit_text_password"
@@ -55,7 +55,7 @@
 
 			</com.google.android.material.textfield.TextInputLayout>
 
-			<com.inteligenciadigital.instagramremake.login.presentation.LoadingButton
+			<com.inteligenciadigital.instagramremake.common.view.LoadingButton
 				android:id="@+id/login_button_enter"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
