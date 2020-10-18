@@ -6,13 +6,38 @@
     android:layout_height="match_parent"
     tools:context=".main.presentation.MainActivity">
 
-    <fragment
-        android:id="@+id/main_fragment"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment"
-        tools:layout="@layout/fragment_main_profile"
-        android:layout_above="@id/main_bottom_nav" />
+        android:layout_height="match_parent" >
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.Toolbar
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:title="@string/app_name" />
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="@android:color/white"
+            tools:context=".main.presentation.MainActivity">
+
+            <fragment
+                android:id="@+id/main_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:name="com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment"
+                tools:layout="@layout/fragment_main_profile" />
+
+        </LinearLayout>
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/main_bottom_nav"
@@ -23,7 +48,6 @@
         app:menu="@menu/menu_bottom_nav"
         app:itemIconTint="@color/colorAccent"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconSize="28dp"
-        />
+        app:itemIconSize="28dp" />
 
 </RelativeLayout>
