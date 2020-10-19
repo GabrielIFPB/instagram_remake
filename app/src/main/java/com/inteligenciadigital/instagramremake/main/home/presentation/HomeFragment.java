@@ -1,4 +1,4 @@
-package com.inteligenciadigital.instagramremake.main.profile.presentation;
+package com.inteligenciadigital.instagramremake.main.home.presentation;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,13 +12,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.inteligenciadigital.instagramremake.R;
 
-public class ProfileFragment extends Fragment {
+public class HomeFragment extends Fragment {
 
-	public ProfileFragment() {
+	public HomeFragment() {
 	}
 
 	@Override
@@ -33,11 +34,11 @@ public class ProfileFragment extends Fragment {
 							 @Nullable ViewGroup container,
 							 @Nullable Bundle savedInstanceState) {
 		// TODO: 18/10/2020 app:layout_scrollFlags="scroll" at toolbar
-		View view = inflater.inflate(R.layout.fragment_main_profile, container, false);
+		View view = inflater.inflate(R.layout.fragment_main_home, container, false);
 
-		RecyclerView recyclerView = view.findViewById(R.id.profile_recycler);
+		RecyclerView recyclerView = view.findViewById(R.id.home_recycler);
 
-		recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
+		recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
 		recyclerView.setAdapter(new PostAdapter());
 
 		return view;
@@ -51,7 +52,7 @@ public class ProfileFragment extends Fragment {
 
 	private class PostAdapter extends RecyclerView.Adapter<PostViewHolder> {
 
-		private int[] images = new int[]{
+		private final int[] images = new int[]{
 				R.drawable.ic_insta_add,
 				R.drawable.ic_insta_add,
 				R.drawable.ic_insta_add,
@@ -70,7 +71,7 @@ public class ProfileFragment extends Fragment {
 		@NonNull
 		@Override
 		public PostViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-			return new PostViewHolder(getLayoutInflater().inflate(R.layout.item_profile_grid, parent, false));
+			return new PostViewHolder(getLayoutInflater().inflate(R.layout.item_post_list, parent, false));
 		}
 
 		@Override
@@ -86,7 +87,7 @@ public class ProfileFragment extends Fragment {
 
 	private static class PostViewHolder extends RecyclerView.ViewHolder {
 
-		private ImageView imagePost;
+		private final ImageView imagePost;
 
 		public PostViewHolder(@NonNull View itemView) {
 			super(itemView);

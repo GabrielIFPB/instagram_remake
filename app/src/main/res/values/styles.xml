@@ -65,6 +65,12 @@
 		<item name="android:background">@drawable/button_background</item>
 	</style>
 
+	<style name="InstaImageViewPost">
+		<item name="android:layout_width">wrap_content</item>
+		<item name="android:layout_height">wrap_content</item>
+		<item name="android:layout_marginEnd">16dp</item>
+	</style>
+
 	<style name="InstaButton.White">
 		<item name="android:textColor">@color/colorAccent</item>
 		<item name="android:background">@drawable/button_white_background</item>
