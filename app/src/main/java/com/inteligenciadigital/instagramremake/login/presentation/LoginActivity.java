@@ -1,6 +1,5 @@
 package com.inteligenciadigital.instagramremake.login.presentation;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.os.Build;
@@ -14,17 +13,22 @@ import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
-import com.inteligenciadigital.instagramremake.common.view.CustomDialog;
+import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
 
-public class LoginActivity extends AppCompatActivity {
+import butterknife.BindView;
 
-	private LoadingButton buttonEnter;
+public class LoginActivity extends AbstractActivity implements LoginView {
+
+	@BindView(R.id.login_button_enter) LoadingButton buttonEnter;
+	@BindView(R.id.login_edit_text_email) EditText editTextEmail;
+	@BindView(R.id.login_edit_text_password) EditText editTextPassword;
+	@BindView(R.id.login_edit_text_email_input) TextInputLayout inputLayoutEmail;
+	@BindView(R.id.login_edit_text_password_input) TextInputLayout inputLayoutPassword;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			Window windows = this.getWindow();
@@ -32,34 +36,21 @@ public class LoginActivity extends AppCompatActivity {
 			windows.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
 		}
 
-		final EditText editTextEmail = this.findViewById(R.id.login_edit_text_email);
-		final EditText editTextPassword = this.findViewById(R.id.login_edit_text_password);
-
 		editTextEmail.addTextChangedListener(watcher);
 		editTextPassword.addTextChangedListener(watcher);
 
-		this.buttonEnter = this.findViewById(R.id.login_button_enter);
 		this.buttonEnter.setOnClickListener(v -> {
 			this.buttonEnter.showProgress(true);
 			new Handler().postDelayed(() -> {
 				this.buttonEnter.showProgress(false);
 
-				TextInputLayout inputLayoutEmail = findViewById(R.id.login_edit_text_email_input);
-				inputLayoutEmail.setError("Esse email é inválido");
-
-				editTextEmail.setBackground(
-						ContextCompat.getDrawable(LoginActivity.this,
-								R.drawable.edit_text_background_error));
-
-				TextInputLayout inputLayoutPassword = findViewById(R.id.login_edit_text_password_input);
-				inputLayoutPassword.setError("Senha incorreta");
-
-				editTextPassword.setBackground(
-						ContextCompat.getDrawable(LoginActivity.this,
-								R.drawable.edit_text_background_error));
-
 			}, 4000);
 		});
+	}
+
+	@Override
+	protected int getLayout() {
+		return R.layout.activity_login;
 	}
 
 	private TextWatcher watcher = new TextWatcher() {
@@ -70,10 +61,7 @@ public class LoginActivity extends AppCompatActivity {
 
 		@Override
 		public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-			if (!charSequence.toString().isEmpty())
-				buttonEnter.setEnabled(true);
-			else
-				buttonEnter.setEnabled(false);
+			buttonEnter.setEnabled(!charSequence.toString().isEmpty());
 		}
 
 		@Override
@@ -81,4 +69,17 @@ public class LoginActivity extends AppCompatActivity {
 
 		}
 	};
+
+	@Override
+	public void onFailureForm(String emaiError, String passwordError) {
+		if (emaiError != null) {
+			this.inputLayoutEmail.setError(emaiError);
+			this.editTextEmail.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
+		}
+	}
+
+	@Override
+	public void onUserLogged() {
+		// TODO: fazer depois
+	}
 }
