@@ -17,14 +17,20 @@ import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
-public class LoginActivity extends AbstractActivity implements LoginView {
+public class LoginActivity extends AbstractActivity implements LoginView, TextWatcher {
 
-	@BindView(R.id.login_button_enter) LoadingButton buttonEnter;
-	@BindView(R.id.login_edit_text_email) EditText editTextEmail;
-	@BindView(R.id.login_edit_text_password) EditText editTextPassword;
-	@BindView(R.id.login_edit_text_email_input) TextInputLayout inputLayoutEmail;
-	@BindView(R.id.login_edit_text_password_input) TextInputLayout inputLayoutPassword;
+	@BindView(R.id.login_button_enter)
+	LoadingButton buttonEnter;
+	@BindView(R.id.login_edit_text_email)
+	EditText editTextEmail;
+	@BindView(R.id.login_edit_text_password)
+	EditText editTextPassword;
+	@BindView(R.id.login_edit_text_email_input)
+	TextInputLayout inputLayoutEmail;
+	@BindView(R.id.login_edit_text_password_input)
+	TextInputLayout inputLayoutPassword;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -36,16 +42,26 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 			windows.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
 		}
 
-		editTextEmail.addTextChangedListener(watcher);
-		editTextPassword.addTextChangedListener(watcher);
+		this.editTextEmail.addTextChangedListener(this);
+		this.editTextPassword.addTextChangedListener(this);
+	}
 
-		this.buttonEnter.setOnClickListener(v -> {
-			this.buttonEnter.showProgress(true);
-			new Handler().postDelayed(() -> {
-				this.buttonEnter.showProgress(false);
+	@Override
+	public void showProgressBar() {
+		this.buttonEnter.showProgress(true);
+	}
 
-			}, 4000);
-		});
+	@Override
+	public void hideProgressBar() {
+		this.buttonEnter.showProgress(false);
+	}
+
+	@OnClick(R.id.login_button_enter)
+	public void onButtonEnterClick() {
+		this.buttonEnter.showProgress(true);
+		new Handler().postDelayed(() -> {
+			this.buttonEnter.showProgress(false);
+		}, 4000);
 	}
 
 	@Override
@@ -53,28 +69,31 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 		return R.layout.activity_login;
 	}
 
-	private TextWatcher watcher = new TextWatcher() {
-		@Override
-		public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+	@Override
+	public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-		}
+	}
 
-		@Override
-		public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-			buttonEnter.setEnabled(!charSequence.toString().isEmpty());
-		}
+	@Override
+	public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+		buttonEnter.setEnabled(!charSequence.toString().isEmpty());
+	}
 
-		@Override
-		public void afterTextChanged(Editable editable) {
+	@Override
+	public void afterTextChanged(Editable editable) {
 
-		}
-	};
+	}
 
 	@Override
 	public void onFailureForm(String emaiError, String passwordError) {
 		if (emaiError != null) {
 			this.inputLayoutEmail.setError(emaiError);
 			this.editTextEmail.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
+		}
+
+		if (passwordError != null) {
+			this.inputLayoutPassword.setError(passwordError);
+			this.editTextPassword.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
 		}
 	}
 
