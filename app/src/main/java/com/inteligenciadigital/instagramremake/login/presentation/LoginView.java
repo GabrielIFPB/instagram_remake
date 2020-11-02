@@ -1,6 +1,8 @@
 package com.inteligenciadigital.instagramremake.login.presentation;
 
-public interface LoginView {
+import com.inteligenciadigital.instagramremake.common.view.ViewProgressBar;
+
+public interface LoginView extends ViewProgressBar {
 
 	void onFailureForm(String emaiError, String passwordError);
 

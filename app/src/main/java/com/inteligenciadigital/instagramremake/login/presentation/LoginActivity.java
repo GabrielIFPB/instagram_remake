@@ -15,6 +15,8 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
+import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
+import com.inteligenciadigital.instagramremake.login.datasource.LoginLocalDataSource;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -32,6 +34,8 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 	@BindView(R.id.login_edit_text_password_input)
 	TextInputLayout inputLayoutPassword;
 
+	private LoginPresenter loginPresenter;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -47,6 +51,12 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 	}
 
 	@Override
+	protected void onInject() {
+		LoginDataSource dataSource = new LoginLocalDataSource();
+		this.loginPresenter = new LoginPresenter(this, dataSource);
+	}
+
+	@Override
 	public void showProgressBar() {
 		this.buttonEnter.showProgress(true);
 	}
@@ -58,10 +68,9 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 
 	@OnClick(R.id.login_button_enter)
 	public void onButtonEnterClick() {
-		this.buttonEnter.showProgress(true);
-		new Handler().postDelayed(() -> {
-			this.buttonEnter.showProgress(false);
-		}, 4000);
+		String email = this.editTextEmail.getText().toString();
+		String password = this.editTextPassword.getText().toString();
+		this.loginPresenter.login(email, password);
 	}
 
 	@Override

@@ -12,22 +12,27 @@ import com.inteligenciadigital.instagramremake.common.util.Drawables;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractActivity extends AppCompatActivity {
+public abstract class AbstractActivity extends AppCompatActivity implements ViewProgressBar {
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setContentView(this.getLayout());
 		ButterKnife.bind(this);
+		this.onInject();
 	}
 
 	protected abstract @LayoutRes int getLayout();
 
+	@Override
 	public void showProgressBar() {}
 
+	@Override
 	public void hideProgressBar() {}
 
 	public Drawable findDrawable(@DrawableRes int drawableId) {
 		return Drawables.getDrawable(this, drawableId);
 	}
+
+	protected abstract void onInject();
 }
