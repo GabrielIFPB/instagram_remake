@@ -7,7 +7,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 
 import com.inteligenciadigital.instagramremake.common.util.Drawables;
 
@@ -23,6 +22,10 @@ public abstract class AbstractActivity extends AppCompatActivity {
 	}
 
 	protected abstract @LayoutRes int getLayout();
+
+	public void showProgressBar() {}
+
+	public void hideProgressBar() {}
 
 	public Drawable findDrawable(@DrawableRes int drawableId) {
 		return Drawables.getDrawable(this, drawableId);
