@@ -2,6 +2,8 @@ package com.inteligenciadigital.instagramremake.main.presentation;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -9,10 +11,17 @@ import android.view.View;
 import androidx.appcompat.widget.Toolbar;
 
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.login.presentation.LoginActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    @Override
+	public static void launch(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
+	}
+
+	@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
