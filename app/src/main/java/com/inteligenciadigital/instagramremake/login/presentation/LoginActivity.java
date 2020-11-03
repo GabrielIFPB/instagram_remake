@@ -4,9 +4,6 @@ import androidx.core.content.ContextCompat;
 
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -17,11 +14,13 @@ import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginLocalDataSource;
+import com.inteligenciadigital.instagramremake.main.presentation.MainActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import butterknife.OnTextChanged;
 
-public class LoginActivity extends AbstractActivity implements LoginView, TextWatcher {
+public class LoginActivity extends AbstractActivity implements LoginView {
 
 	@BindView(R.id.login_button_enter)
 	LoadingButton buttonEnter;
@@ -45,9 +44,6 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 			windows.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
 			windows.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
 		}
-
-		this.editTextEmail.addTextChangedListener(this);
-		this.editTextPassword.addTextChangedListener(this);
 	}
 
 	@Override
@@ -78,19 +74,30 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 		return R.layout.activity_login;
 	}
 
-	@Override
-	public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+	@OnTextChanged({R.id.login_edit_text_email, R.id.login_edit_text_password})
+	public void onTextChanged(CharSequence s) {
+		String email = this.editTextEmail.getText().toString();
+		String password = this.editTextPassword.getText().toString();
+		boolean enabled = !email.isEmpty() && !password.isEmpty();
+		this.buttonEnter.setEnabled(enabled);
+		this.cleanErrorEmail(s);
+		this.cleanErrorPassword(s);
 	}
 
-	@Override
-	public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-		buttonEnter.setEnabled(!charSequence.toString().isEmpty());
+	private void cleanErrorEmail(CharSequence s) {
+		if (s.hashCode() == this.editTextEmail.getText().hashCode()) {
+			this.editTextEmail.setBackground(this.findDrawable(R.drawable.edit_text_background));
+			this.inputLayoutEmail.setError(null);
+			this.inputLayoutEmail.setErrorEnabled(false);
+		}
 	}
 
-	@Override
-	public void afterTextChanged(Editable editable) {
-
+	private void cleanErrorPassword(CharSequence s) {
+		if (s.hashCode() == this.editTextPassword.getText().hashCode()) {
+			this.editTextPassword.setBackground(this.findDrawable(R.drawable.edit_text_background));
+			this.inputLayoutPassword.setError(null);
+			this.inputLayoutPassword.setErrorEnabled(false);
+		}
 	}
 
 	@Override
@@ -109,5 +116,6 @@ public class LoginActivity extends AbstractActivity implements LoginView, TextWa
 	@Override
 	public void onUserLogged() {
 		// TODO: fazer depois
+		MainActivity.launch(this);
 	}
 }

@@ -1,10 +1,12 @@
 package com.inteligenciadigital.instagramremake.login.presentation;
 
+import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.models.UserAuth;
+import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
+import com.inteligenciadigital.instagramremake.common.util.Strings;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 
-import android.os.Handler;
-
-public class LoginPresenter {
+public class LoginPresenter implements Presenter {
 
 	private final LoginView loginView;
 	private final LoginDataSource dataSource;
@@ -15,11 +17,28 @@ public class LoginPresenter {
 	}
 
 	public void login(String emial, String password) {
-		this.loginView.showProgressBar();
+		String context = this.loginView.getContext().getString(R.string.invalid_email);
+		if (!Strings.emailValid(emial)) {
+			this.loginView.onFailureForm(context, null);
+			return;
+		}
 
-		new Handler().postDelayed(() -> {
-			this.loginView.hideProgressBar();
-			this.loginView.onFailureForm("Error01", "Error02");
-		}, 2000);
+		this.loginView.showProgressBar();
+		this.dataSource.login(emial, password, this);
+	}
+
+	@Override
+	public void onSuccess(UserAuth userAuth) {
+		this.loginView.onUserLogged();
+	}
+
+	@Override
+	public void onError(String message) {
+		this.loginView.onFailureForm(null, message);
+	}
+
+	@Override
+	public void onComplete() {
+		this.loginView.hideProgressBar();
 	}
 }

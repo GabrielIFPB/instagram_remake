@@ -1,8 +1,12 @@
 package com.inteligenciadigital.instagramremake.common.view;
 
+import android.content.Context;
+
 public interface ViewProgressBar {
 
-	public void showProgressBar();
+	Context getContext();
 
-	public void hideProgressBar();
+	void showProgressBar();
+
+	void hideProgressBar();
 }
