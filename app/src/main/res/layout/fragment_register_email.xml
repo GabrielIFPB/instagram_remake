@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
-	android:orientation="vertical"
-	tools:context=".register.presentation.RegisterActivity"
-	tools:showIn="@layout/activity_register">
+	android:orientation="vertical">
 
 	<androidx.appcompat.widget.AppCompatImageView
 		android:layout_width="wrap_content"
@@ -31,7 +28,7 @@
 	</com.google.android.material.textfield.TextInputLayout>
 
 	<com.inteligenciadigital.instagramremake.common.view.LoadingButton
-		android:id="@+id/register_button_enter"
+		android:id="@+id/register_button_next"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		app:text="@string/next" />
@@ -44,7 +41,7 @@
 		android:background="@color/colorPrimaryDark" />
 
 	<androidx.appcompat.widget.AppCompatTextView
-		android:id="@+id/register_text_view_login"
+		android:id="@+id/register_text_view_email_login"
 		style="@style/InstaTextViewBase"
 		android:layout_width="match_parent"
 		android:gravity="center"

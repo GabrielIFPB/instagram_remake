@@ -15,6 +15,7 @@ import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.presentation.MainActivity;
+import com.inteligenciadigital.instagramremake.register.presentation.RegisterActivity;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -38,12 +39,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-			Window windows = this.getWindow();
-			windows.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-			windows.setStatusBarColor(ContextCompat.getColor(this, R.color.colorAccent));
-		}
+		this.setStatusBarDark();
 	}
 
 	@Override
@@ -62,11 +58,22 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 		this.buttonEnter.showProgress(false);
 	}
 
+	@Override
+	public void onUserLogged() {
+		// TODO: fazer depois
+		MainActivity.launch(this);
+	}
+
 	@OnClick(R.id.login_button_enter)
 	public void onButtonEnterClick() {
 		String email = this.editTextEmail.getText().toString();
 		String password = this.editTextPassword.getText().toString();
 		this.loginPresenter.login(email, password);
+	}
+
+	@OnClick(R.id.login_text_view_register)
+	public void onTextViewRegisterClick() {
+		RegisterActivity.launch(this);
 	}
 
 	@Override
@@ -111,11 +118,5 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 			this.inputLayoutPassword.setError(passwordError);
 			this.editTextPassword.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
 		}
-	}
-
-	@Override
-	public void onUserLogged() {
-		// TODO: fazer depois
-		MainActivity.launch(this);
 	}
 }
