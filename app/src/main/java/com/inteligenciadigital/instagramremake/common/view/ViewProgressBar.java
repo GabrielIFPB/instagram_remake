@@ -9,4 +9,6 @@ public interface ViewProgressBar {
 	void showProgressBar();
 
 	void hideProgressBar();
+
+	void setStatusBarDark();
 }
