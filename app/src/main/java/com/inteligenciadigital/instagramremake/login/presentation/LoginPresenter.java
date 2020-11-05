@@ -16,15 +16,15 @@ public class LoginPresenter implements Presenter {
 		this.dataSource = dataSource;
 	}
 
-	public void login(String emial, String password) {
+	public void login(String email, String password) {
 		String context = this.loginView.getContext().getString(R.string.invalid_email);
-		if (!Strings.emailValid(emial)) {
+		if (!Strings.emailValid(email)) {
 			this.loginView.onFailureForm(context, null);
 			return;
 		}
 
 		this.loginView.showProgressBar();
-		this.dataSource.login(emial, password, this);
+		this.dataSource.login(email, password, this);
 	}
 
 	@Override

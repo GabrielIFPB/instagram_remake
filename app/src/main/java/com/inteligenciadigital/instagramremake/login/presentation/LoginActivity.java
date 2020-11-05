@@ -108,9 +108,9 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 	}
 
 	@Override
-	public void onFailureForm(String emaiError, String passwordError) {
-		if (emaiError != null) {
-			this.inputLayoutEmail.setError(emaiError);
+	public void onFailureForm(String emailError, String passwordError) {
+		if (emailError != null) {
+			this.inputLayoutEmail.setError(emailError);
 			this.editTextEmail.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
 		}
 
