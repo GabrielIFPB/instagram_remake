@@ -19,7 +19,9 @@ import com.inteligenciadigital.instagramremake.common.util.Drawables;
 
 import butterknife.ButterKnife;
 
-public abstract class AbstractFragment extends Fragment implements ViewProgressBar {
+public abstract class AbstractFragment<P> extends Fragment implements ViewProgressBar {
+
+	protected P presenter;
 
 	@Nullable
 	@Override
@@ -58,6 +60,10 @@ public abstract class AbstractFragment extends Fragment implements ViewProgressB
 
 	public int findColor(@ColorRes int colorId) {
 		return Colors.getColor(this.getContext(), colorId);
+	}
+
+	public void setPresenter(P presenter) {
+		this.presenter = presenter;
 	}
 
 	protected abstract @LayoutRes int getLayout();
