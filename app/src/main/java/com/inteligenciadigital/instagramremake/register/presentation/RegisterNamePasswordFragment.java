@@ -89,8 +89,8 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 		String name = this.editTextName.getText().toString();
 		String password = this.editTextPassword.getText().toString();
 		String confirmPassword = this.editTextPasswordConfirm.getText().toString();
-		boolean isEmpty = name.isEmpty() && password.isEmpty() && confirmPassword.isEmpty();
-		this.buttonNext.setEnabled(!isEmpty);
+		boolean isValid = !name.isEmpty() && !password.isEmpty() && !confirmPassword.isEmpty();
+		this.buttonNext.setEnabled(isValid);
 
 		this.editTextName.setBackground(this.findDrawable(R.drawable.edit_text_background));
 		this.inputLayoutName.setError(null);
