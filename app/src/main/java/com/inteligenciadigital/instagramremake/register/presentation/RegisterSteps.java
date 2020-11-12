@@ -3,5 +3,8 @@ package com.inteligenciadigital.instagramremake.register.presentation;
 public enum RegisterSteps {
 
 	EMAIL,
-	NAME_PASSWORD;
+	NAME_PASSWORD,
+	WELCOME,
+	PHOTO
+	;
 }

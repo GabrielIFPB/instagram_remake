@@ -7,6 +7,7 @@ import java.util.Set;
 
 public class Database {
 
+	private static Set<User> users;
 	private static Set<UserAuth> usersAuth;
 	private static Database INSTANCE;
 
@@ -16,6 +17,7 @@ public class Database {
 	private UserAuth userAuth;
 
 	static {
+		users = new HashSet<>();
 		usersAuth = new HashSet<>();
 
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
@@ -45,8 +47,32 @@ public class Database {
 		return this;
 	}
 
-	public Database login(String email, String password) {
+	public Database createUser(String name, String email, String password) {
+		timeout(() -> {
+			UserAuth userAuth = new UserAuth();
+			userAuth.setEmail(email);
+			userAuth.setPassword(password);
 
+			usersAuth.add(userAuth);
+
+			User user = new User();
+			user.setName(name);
+			user.setEmail(email);
+
+			boolean added = users.add(user);
+			if (added) {
+				this.userAuth = userAuth;
+				this.onSuccessListener.onSuccess(userAuth);
+			} else {
+				this.userAuth = null;
+				this.onFailureListener.onFailure(new IllegalArgumentException("Usuário já existe"));
+			}
+			this.onCompleteListener.onComplete();
+		});
+		return this;
+	}
+
+	public Database login(String email, String password) {
 		this.timeout(() -> {
 			UserAuth userAuth = new UserAuth();
 			userAuth.setEmail(email);

@@ -6,7 +6,7 @@ import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
 import com.inteligenciadigital.instagramremake.common.util.Strings;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 
-public class LoginPresenter implements Presenter {
+public class LoginPresenter implements Presenter<UserAuth> {
 
 	private final LoginView loginView;
 	private final LoginDataSource dataSource;
