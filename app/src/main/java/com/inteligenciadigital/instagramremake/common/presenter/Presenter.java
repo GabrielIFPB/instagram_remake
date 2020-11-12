@@ -2,9 +2,9 @@ package com.inteligenciadigital.instagramremake.common.presenter;
 
 import com.inteligenciadigital.instagramremake.common.models.UserAuth;
 
-public interface Presenter {
+public interface Presenter<T> {
 
-	void onSuccess(UserAuth userAuth);
+	void onSuccess(T userAuth);
 
 	void onError(String message);
 

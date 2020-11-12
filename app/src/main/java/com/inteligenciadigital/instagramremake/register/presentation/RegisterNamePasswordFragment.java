@@ -1,6 +1,7 @@
 package com.inteligenciadigital.instagramremake.register.presentation;
 
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
@@ -64,6 +65,11 @@ public class RegisterNamePasswordFragment extends AbstractFragment<RegisterPrese
 			this.inputLayoutPassword.setError(passwordError);
 			this.editTextPassword.setBackground(this.findDrawable(R.drawable.edit_text_background_error));
 		}
+	}
+
+	@Override
+	public void onFailureCreateUser(String message) {
+		Toast.makeText(this.getContext(), message, Toast.LENGTH_SHORT).show();
 	}
 
 	@OnClick(R.id.register_text_view_login)

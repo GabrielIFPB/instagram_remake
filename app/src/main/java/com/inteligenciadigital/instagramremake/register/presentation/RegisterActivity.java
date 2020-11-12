@@ -10,6 +10,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
+import com.inteligenciadigital.instagramremake.register.datasource.RegisterDataSource;
+import com.inteligenciadigital.instagramremake.register.datasource.RegisterLocalDataSource;
 
 public class RegisterActivity extends AbstractActivity implements RegisterView {
 
@@ -28,7 +30,8 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 
 	@Override
 	protected void onInject() {
-		this.presenter = new RegisterPresenter();
+		RegisterDataSource dataSource = new RegisterLocalDataSource();
+		this.presenter = new RegisterPresenter(dataSource);
 		this.presenter.setRegisterView(this);
 
 		this.showNextView(RegisterSteps.EMAIL);
@@ -42,6 +45,9 @@ public class RegisterActivity extends AbstractActivity implements RegisterView {
 				break;
 			case NAME_PASSWORD:
 				fragment = RegisterNamePasswordFragment.newInstance(this.presenter);
+				break;
+			case WELCOME:
+				fragment = RegisterWelcomeFragment.newInstance(this.presenter);
 				break;
 		}
 		FragmentManager manager = this.getSupportFragmentManager();
