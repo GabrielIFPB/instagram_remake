@@ -34,6 +34,10 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 		this.registerView.showNextView(RegisterSteps.PHOTO);
 	}
 
+	public void jumpRegistration() {
+		this.registerView.onUserCreate();
+	}
+
 	public void setRegisterView(RegisterView registerView) {
 		this.registerView = registerView;
 	}
