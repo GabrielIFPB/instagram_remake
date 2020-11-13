@@ -5,7 +5,7 @@ import android.widget.EditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
-import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
+import com.inteligenciadigital.instagramremake.common.component.LoadingButton;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -15,8 +15,10 @@ public class RegisterEmailFragment extends AbstractFragment<RegisterPresenter> i
 
 	@BindView(R.id.register_edit_text_email_input)
 	TextInputLayout inputLayoutEmail;
+
 	@BindView(R.id.register_edit_text_email)
 	EditText editTextEmail;
+
 	@BindView(R.id.register_button_next)
 	LoadingButton buttonNext;
 

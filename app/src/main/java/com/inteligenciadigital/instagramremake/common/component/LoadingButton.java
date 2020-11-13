@@ -1,4 +1,4 @@
-package com.inteligenciadigital.instagramremake.common.view;
+package com.inteligenciadigital.instagramremake.common.component;
 
 import android.content.Context;
 import android.content.res.TypedArray;

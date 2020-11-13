@@ -1,8 +1,7 @@
-package com.inteligenciadigital.instagramremake.common.view;
+package com.inteligenciadigital.instagramremake.common.component;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.ContextWrapper;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.View;

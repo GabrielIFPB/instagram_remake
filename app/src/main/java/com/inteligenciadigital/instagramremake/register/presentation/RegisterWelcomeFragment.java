@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
-import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
+import com.inteligenciadigital.instagramremake.common.component.LoadingButton;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -18,6 +18,7 @@ public class RegisterWelcomeFragment extends AbstractFragment<RegisterPresenter>
 
 	@BindView(R.id.register_button_next)
 	LoadingButton buttonNext;
+
 	@BindView(R.id.register_text_view_welcome)
 	TextView textViewWelcome;
 
