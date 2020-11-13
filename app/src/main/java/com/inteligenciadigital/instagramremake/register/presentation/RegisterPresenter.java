@@ -1,5 +1,7 @@
 package com.inteligenciadigital.instagramremake.register.presentation;
 
+import android.net.Uri;
+
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.UserAuth;
 import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
@@ -11,12 +13,14 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 	private RegisterView registerView;
 	private RegisterView.EmailView emailView;
 	private RegisterView.NamePasswordView namePasswordView;
+	private RegisterView.PhotoView photoView;
 
 	private final RegisterDataSource dataSource;
 
 	private String name;
 	private String email;
-	private String password;
+	private Uri uri;
+
 
 	public RegisterPresenter(RegisterDataSource dataSource) {
 		this.dataSource = dataSource;
@@ -30,14 +34,6 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 		this.name = name;
 	}
 
-	public void showPhotoView() {
-		this.registerView.showNextView(RegisterSteps.PHOTO);
-	}
-
-	public void jumpRegistration() {
-		this.registerView.onUserCreate();
-	}
-
 	public void setRegisterView(RegisterView registerView) {
 		this.registerView = registerView;
 	}
@@ -48,6 +44,10 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 
 	public void setNamePasswordView(RegisterView.NamePasswordView namePasswordView) {
 		this.namePasswordView = namePasswordView;
+	}
+
+	public void setPhotoView(RegisterView.PhotoView photoView) {
+		this.photoView = photoView;
 	}
 
 	public void setEmail(String email) {
@@ -66,10 +66,34 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 			this.namePasswordView.onFailureForm(null, password_not_equal);
 		}
 		this.name = name;
-		this.password = password;
 
 		this.namePasswordView.showProgressBar();
-		this.dataSource.createUser(this.name, this.email, this.password, this);
+		this.dataSource.createUser(name, email, password, this);
+	}
+
+	public RegisterView.EmailView getEmailView() {
+		return this.emailView;
+	}
+
+	public void setUri(Uri uri) {
+		this.uri = uri;
+		this.photoView.onImageCropped(this.uri);
+	}
+
+	public void showCamera() {
+		this.registerView.showCamera();
+	}
+
+	public void showGallery() {
+		this.registerView.showGallery();
+	}
+
+	public void showPhotoView() {
+		this.registerView.showNextView(RegisterSteps.PHOTO);
+	}
+
+	public void jumpRegistration() {
+		this.registerView.onUserCreate();
 	}
 
 	@Override

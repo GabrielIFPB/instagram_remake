@@ -1,17 +1,12 @@
 package com.inteligenciadigital.instagramremake.login.presentation;
 
-import androidx.core.content.ContextCompat;
-
-import android.os.Build;
 import android.os.Bundle;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
-import com.inteligenciadigital.instagramremake.common.view.LoadingButton;
+import com.inteligenciadigital.instagramremake.common.component.LoadingButton;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.presentation.MainActivity;

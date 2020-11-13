@@ -5,16 +5,18 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	tools:context=".register.presentation.RegisterActivity"
-	tools:showIn="@layout/activity_register">
+	tools:context=".register.presentation.RegisterActivity">
 
-	<androidx.appcompat.widget.AppCompatImageView
+	<de.hdodenhof.circleimageview.CircleImageView
+		android:id="@+id/register_camera_icon"
 		android:layout_width="wrap_content"
 		android:layout_height="120dp"
 		android:layout_gravity="center"
 		android:layout_marginTop="40dp"
 		android:layout_marginBottom="24dp"
-		android:src="@drawable/camera_icon" />
+		android:src="@drawable/camera_icon"
+		app:civ_border_color="@color/colorAccent"
+		app:civ_border_width="0dp" />
 
 	<TextView
 		style="@style/InstaTextViewVaseForm"
@@ -27,7 +29,7 @@
 		android:layout_gravity="center"
 		android:text="@string/photo_register_subtitle" />
 
-	<com.inteligenciadigital.instagramremake.common.view.LoadingButton
+	<com.inteligenciadigital.instagramremake.common.component.LoadingButton
 		android:id="@+id/register_button_next"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
