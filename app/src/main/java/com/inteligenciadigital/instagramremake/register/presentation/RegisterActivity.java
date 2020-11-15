@@ -8,7 +8,6 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import androidx.annotation.Nullable;
@@ -106,12 +105,12 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //		super.onActivityResult(requestCode, resultCode, data);
-		this.cropImageEnabled(true);
+		this.cropViewEnabled(true);
 		MediaHelper mediaHelper = MediaHelper.getInstance(this);
 		mediaHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
-	protected void cropImageEnabled(boolean enable) {
+	protected void cropViewEnabled(boolean enable) {
 		this.scrollView.setVisibility(enable ? View.GONE : View.VISIBLE);
 		this.buttonCrop.setVisibility(enable ? View.VISIBLE : View.GONE);
 		int blackId = this.findColor(android.R.color.black);
@@ -142,7 +141,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
 	@OnClick(R.id.register_button_crop)
 	public void onButtonCropClick() {
-		this.cropImageEnabled(false);
+		this.cropViewEnabled(false);
 		MediaHelper.getInstance(this).cropImage();
 	}
 

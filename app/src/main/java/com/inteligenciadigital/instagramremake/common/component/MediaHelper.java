@@ -66,9 +66,10 @@ public class MediaHelper {
 			if (photoFile != null) {
 				this.mCropImageUri = FileProvider.getUriForFile(
 						this.getContext(),
-						"com.inteligenciadigital.instagramremake.fileprovider",
+						this.activity.getApplication().getPackageName() + ".fileprovider",
 						photoFile
 				);
+
 				intent.putExtra(MediaStore.EXTRA_OUTPUT, this.mCropImageUri);
 				this.activity.startActivityForResult(intent, CAMERA_CODE);
 			}
@@ -77,7 +78,7 @@ public class MediaHelper {
 
 	public void chooserGallery() {
 		Intent intent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-		activity.startActivityForResult(intent, GALLERY_CODE);
+		this.activity.startActivityForResult(intent, GALLERY_CODE);
 	}
 
 	private void setFragment(Fragment fragment) {
@@ -144,9 +145,8 @@ public class MediaHelper {
 
 	public void cropImage() {
 		File getImage = this.getContext().getExternalCacheDir();
-		if (getImage != null) {
-			mSavedImageUri = Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis() + ".jpg"));
-		}
+		if (getImage != null)
+			this.mSavedImageUri = Uri.fromFile(new File(getImage.getPath(), System.currentTimeMillis() + ".jpg"));
 		this.cropImageView.saveCroppedImageAsync(this.mSavedImageUri);
 	}
 

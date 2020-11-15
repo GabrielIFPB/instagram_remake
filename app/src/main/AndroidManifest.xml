@@ -30,16 +30,17 @@
 			android:theme="@style/Base.Theme.AppCompat" />
 
 		<provider
-			android:authorities="com.inteligenciadigital.instagramremake.fileprovider"
 			android:name="androidx.core.content.FileProvider"
-			android:grantUriPermissions="true"
-			android:exported="false" >
+			android:authorities="com.inteligenciadigital.instagramremake.fileprovider"
+			android:exported="false"
+			android:grantUriPermissions="true">
 
 			<meta-data
 				android:name="android.support.FILE_PROVIDER_PATHS"
-				android:resource="@xml/file_path" />
+				android:resource="@xml/file_paths" />
 
 		</provider>
+
 
 	</application>
 

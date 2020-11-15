@@ -68,7 +68,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 		this.name = name;
 
 		this.namePasswordView.showProgressBar();
-		this.dataSource.createUser(name, email, password, this);
+		this.dataSource.createUser(name, this.email, password, this);
 	}
 
 	public RegisterView.EmailView getEmailView() {
