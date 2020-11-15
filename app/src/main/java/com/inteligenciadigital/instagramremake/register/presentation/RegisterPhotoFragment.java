@@ -43,7 +43,6 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
 		this.buttonNext.setEnabled(true);
 	}
 

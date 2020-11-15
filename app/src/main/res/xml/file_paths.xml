@@ -5,4 +5,8 @@
 		name="my_images"
 		path="Android/data/com.inteligenciadigital.instagramremake/file/Pictures" />
 
+	<external-files-path
+		name="my_images"
+		path="Android/data/com.inteligenciadigital.instagramremake/file/Pictures" />
+
 </paths>
