@@ -71,13 +71,17 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 		this.dataSource.createUser(name, this.email, password, this);
 	}
 
+	public void setUri(Uri uri) {
+		this.uri = uri;
+		this.photoView.onImageCropped(this.uri);
+	}
+
 	public RegisterView.EmailView getEmailView() {
 		return this.emailView;
 	}
 
-	public void setUri(Uri uri) {
-		this.uri = uri;
-		this.photoView.onImageCropped(this.uri);
+	public void showPhotoView() {
+		this.registerView.showNextView(RegisterSteps.PHOTO);
 	}
 
 	public void showCamera() {
@@ -86,10 +90,6 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 
 	public void showGallery() {
 		this.registerView.showGallery();
-	}
-
-	public void showPhotoView() {
-		this.registerView.showNextView(RegisterSteps.PHOTO);
 	}
 
 	public void jumpRegistration() {
