@@ -46,6 +46,22 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 		this.buttonNext.setEnabled(true);
 	}
 
+	@Override
+	public void onImageCropped(Uri uri) {
+		if (this.getContext() != null) {
+			ContentResolver resolver = this.getContext().getContentResolver();
+			if (resolver != null) {
+				try {
+					Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, uri);
+					this.imageViewCropped.setImageBitmap(bitmap);
+				} catch (IOException e) {
+					e.printStackTrace();
+					Log.e("TESTE", e.getMessage(), e);
+				}
+			}
+		}
+	}
+
 	@OnClick(R.id.register_button_next)
 	public void onButtonNextClick() {
 		CustomDialog customDialog = new CustomDialog.Builder(this.getContext())
@@ -69,22 +85,6 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 	@OnClick(R.id.register_button_jump)
 	public void onButtonJumpClick() {
 		this.presenter.jumpRegistration();
-	}
-
-	@Override
-	public void onImageCropped(Uri uri) {
-		if (this.getContext() != null) {
-			ContentResolver resolver = this.getContext().getContentResolver();
-			if (resolver != null) {
-				try {
-					Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, uri);
-					this.imageViewCropped.setImageBitmap(bitmap);
-				} catch (IOException e) {
-					e.printStackTrace();
-					Log.e("TESTE", e.getMessage(), e);
-				}
-			}
-		}
 	}
 
 	@Override

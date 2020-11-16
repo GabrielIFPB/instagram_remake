@@ -110,7 +110,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 		mediaHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
-	protected void cropViewEnabled(boolean enable) {
+	private void cropViewEnabled(boolean enable) {
 		this.scrollView.setVisibility(enable ? View.GONE : View.VISIBLE);
 		this.buttonCrop.setVisibility(enable ? View.VISIBLE : View.GONE);
 		int blackId = this.findColor(android.R.color.black);
