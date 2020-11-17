@@ -41,6 +41,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 	Button buttonCrop;
 
 	private RegisterPresenter presenter;
+	private MediaHelper mediaHelper;
 
 	public static void launch(Context context) {
 		Intent intent = new Intent(context, RegisterActivity.class);
@@ -51,6 +52,9 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		this.setStatusBarDark();
+		this.mediaHelper = MediaHelper.getInstance(this);
+		this.mediaHelper.cropView(cropImageView);
+		this.mediaHelper.listener(this);
 	}
 
 	@Override
@@ -105,12 +109,14 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
 //		super.onActivityResult(requestCode, resultCode, data);
+		super.onActivityResult(requestCode, resultCode, data);
 		this.cropViewEnabled(true);
 		MediaHelper mediaHelper = MediaHelper.getInstance(this);
 		mediaHelper.onActivityResult(requestCode, resultCode, data);
 	}
 
 	private void cropViewEnabled(boolean enable) {
+		this.cropImageView.setVisibility(enable ? View.VISIBLE : View.GONE);
 		this.scrollView.setVisibility(enable ? View.GONE : View.VISIBLE);
 		this.buttonCrop.setVisibility(enable ? View.VISIBLE : View.GONE);
 		int blackId = this.findColor(android.R.color.black);
@@ -125,24 +131,18 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
 	@Override
 	public void showCamera() {
-		MediaHelper.getInstance(this)
-				.cropView(this.cropImageView)
-				.listener(this)
-				.chooserCamera();
+		this.mediaHelper.chooserCamera();
 	}
 
 	@Override
 	public void showGallery() {
-		MediaHelper.getInstance(this)
-				.cropView(this.cropImageView)
-				.listener(this)
-				.chooserGallery();
+		this.mediaHelper.chooserGallery();
 	}
 
 	@OnClick(R.id.register_button_crop)
 	public void onButtonCropClick() {
 		this.cropViewEnabled(false);
-		MediaHelper.getInstance(this).cropImage();
+		MediaHelper.getInstance(this).cropImage(this.cropImageView);
 	}
 
 	@Override
@@ -153,5 +153,10 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 	@Override
 	public void onImageCropped(Uri uri) {
 		this.presenter.setUri(uri);
+	}
+
+	@Override
+	public void onImagePicked(Uri uri) {
+		this.cropImageView.setImageUriAsync(uri);
 	}
 }
