@@ -73,11 +73,8 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 
 	public void setUri(Uri uri) {
 		this.uri = uri;
-		this.photoView.onImageCropped(this.uri);
-	}
-
-	public RegisterView.EmailView getEmailView() {
-		return this.emailView;
+		if (this.photoView != null)
+			this.photoView.onImageCropped(this.uri);
 	}
 
 	public void showPhotoView() {
