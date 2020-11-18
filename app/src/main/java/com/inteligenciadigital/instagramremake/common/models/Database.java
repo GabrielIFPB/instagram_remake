@@ -1,13 +1,16 @@
 package com.inteligenciadigital.instagramremake.common.models;
 
+import android.net.Uri;
 import android.os.Handler;
 
+import java.net.URI;
 import java.util.HashSet;
 import java.util.Set;
 
 public class Database {
 
 	private static Set<User> users;
+	private static Set<Uri> storages;
 	private static Set<UserAuth> usersAuth;
 	private static Database INSTANCE;
 
@@ -19,6 +22,7 @@ public class Database {
 	static {
 		users = new HashSet<>();
 		usersAuth = new HashSet<>();
+		storages = new HashSet<>();
 
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
 //		usersAuth.add(new UserAuth("joba@gmail.com", "1234"));
@@ -47,6 +51,20 @@ public class Database {
 		return this;
 	}
 
+	public Database addPhoto(String uuid, Uri uri) {
+		timeout(() ->{
+			Database.users = Database.users;
+			for (User user: users) {
+				if (user.getUuid().equals(uuid)) {
+					user.setUri(uri);
+				}
+			}
+			storages.add(uri);
+			this.onSuccessListener.onSuccess(true);
+		});
+		return this;
+	}
+
 	public Database createUser(String name, String email, String password) {
 		timeout(() -> {
 			UserAuth userAuth = new UserAuth();
@@ -58,6 +76,7 @@ public class Database {
 			User user = new User();
 			user.setName(name);
 			user.setEmail(email);
+			user.setUuid(userAuth.getUUID());
 
 			boolean added = users.add(user);
 			if (added) {
@@ -104,5 +123,9 @@ public class Database {
 
 	public interface OnCompleteListener {
 		void onComplete();
+	}
+
+	public UserAuth getUser() {
+		return this.userAuth;
 	}
 }

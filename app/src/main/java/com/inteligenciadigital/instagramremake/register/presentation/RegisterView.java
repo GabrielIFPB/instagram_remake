@@ -15,7 +15,7 @@ public interface RegisterView {
 
 	void showGallery();
 
-	interface EmailView {
+	interface EmailView extends ViewProgressBar {
 
 		Context getContext();
 
@@ -33,7 +33,7 @@ public interface RegisterView {
 
 	interface WelcomeView {}
 
-	interface PhotoView {
+	interface PhotoView extends ViewProgressBar {
 
 		void onImageCropped(Uri uri);
 	}

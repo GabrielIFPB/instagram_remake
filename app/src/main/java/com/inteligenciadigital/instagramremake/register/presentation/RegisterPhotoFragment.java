@@ -91,4 +91,14 @@ public class RegisterPhotoFragment extends AbstractFragment<RegisterPresenter> i
 	protected int getLayout() {
 		return R.layout.fragment_register_photo;
 	}
+
+	@Override
+	public void showProgressBar() {
+		this.buttonNext.showProgress(true);
+	}
+
+	@Override
+	public void hideProgressBar() {
+		this.buttonNext.showProgress(false);
+	}
 }
