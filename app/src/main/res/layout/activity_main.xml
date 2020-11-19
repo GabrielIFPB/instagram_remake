@@ -41,11 +41,10 @@
             android:background="@android:color/white"
             tools:context=".main.presentation.MainActivity">
 
-            <fragment
+            <FrameLayout
                 android:id="@+id/main_fragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:name="com.inteligenciadigital.instagramremake.main.camera.presentation.CameraFragment"
                 tools:layout="@layout/fragment_main_gallery" />
 
         </LinearLayout>
