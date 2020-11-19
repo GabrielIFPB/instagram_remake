@@ -126,7 +126,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
 	@Override
 	public void onUserCreate() {
-		MainActivity.launch(this);
+		MainActivity.launch(this, MainActivity.REGISTER_ACTIVITY);
 	}
 
 	@Override
