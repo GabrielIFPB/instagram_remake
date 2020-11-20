@@ -15,10 +15,28 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
+import com.inteligenciadigital.instagramremake.main.presentation.MainView;
 
-public class ProfileFragment extends Fragment {
+import butterknife.BindView;
+
+public class ProfileFragment extends AbstractFragment<ProfilePresenter> {
+
+	private MainView mainView;
+
+	@BindView(R.id.profile_recycler)
+	RecyclerView recyclerView;
 
 	public ProfileFragment() {
+	}
+
+	public static ProfileFragment newInstance(MainView mainView) {
+		ProfileFragment profileFragment = new ProfileFragment();
+		return profileFragment;
+	}
+
+	private void setMainView(MainView mainView) {
+		this.mainView = mainView;
 	}
 
 	@Override
@@ -33,14 +51,18 @@ public class ProfileFragment extends Fragment {
 	                         @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
 		// TODO: 18/10/2020 app:layout_scrollFlags="scroll" at toolbar
-		View view = inflater.inflate(R.layout.fragment_main_profile, container, false);
 
-		RecyclerView recyclerView = view.findViewById(R.id.profile_recycler);
+		View view = super.onCreateView(inflater, container, savedInstanceState);
 
-		recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
-		recyclerView.setAdapter(new PostAdapter());
+		this.recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
+		this.recyclerView.setAdapter(new PostAdapter());
 
 		return view;
+	}
+
+	@Override
+	protected int getLayout() {
+		return R.layout.fragment_main_profile;
 	}
 
 	@Override
