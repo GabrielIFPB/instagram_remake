@@ -1,0 +1,9 @@
+package com.inteligenciadigital.instagramremake.main.profile.datasource;
+
+import com.inteligenciadigital.instagramremake.common.models.UserProfile;
+import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
+
+public interface ProfileDataSource {
+
+	void findUser(Presenter<UserProfile> presenter);
+}

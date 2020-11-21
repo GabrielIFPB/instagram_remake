@@ -9,29 +9,36 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.camera.presentation.CameraFragment;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
+import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileDataSource;
+import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileLocaDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment;
+import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfilePresenter;
 import com.inteligenciadigital.instagramremake.main.search.presentation.SearchFragment;
 
-public class MainActivity extends AbstractActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AbstractActivity implements MainView, BottomNavigationView.OnNavigationItemSelectedListener {
 
 	public static final int LOGIN_ACTIVITY = 10;
 	public static final int REGISTER_ACTIVITY = 11;
     private static final String ACT_SOURCE = "ACT_SOURCE";
 
-    Fragment homeFragment;
-    Fragment profileFragment;
-    Fragment cameraFragment;
-    Fragment searchFragment;
-    Fragment active;
+    private Fragment homeFragment;
+    private Fragment profileFragment;
+    private Fragment cameraFragment;
+    private Fragment searchFragment;
+    private Fragment active;
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -51,6 +58,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
         Toolbar toolbar = this.findViewById(R.id.main_toolbar);
         this.setSupportActionBar(toolbar);
+        this.scrollToolbarEnabled(false);
 
         if (this.getSupportActionBar() != null) {
             Drawable drawable = this.getResources().getDrawable(R.drawable.ic_insta_camera);
@@ -61,8 +69,12 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 
     @Override
     protected void onInject() {
-        this.homeFragment = new HomeFragment();
-        this.profileFragment = new ProfileFragment();
+        ProfileDataSource profileDataSource = new ProfileLocaDataSource();
+
+        ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource);
+
+        this.homeFragment = HomeFragment.newInstance(this);
+        this.profileFragment = ProfileFragment.newInstance(this, profilePresenter);
         this.cameraFragment = new CameraFragment();
         this.searchFragment = new SearchFragment();
         
@@ -79,24 +91,26 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
                 .hide(this.searchFragment).commit();
 
         fragmentManager.beginTransaction().add(R.id.main_fragment, this.homeFragment)
-                .hide(this.homeFragment).commit();
+                .show(this.homeFragment).commit();
+
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        BottomNavigationView navigationView = this.findViewById(R.id.main_bottom_nav);
+        navigationView.setOnNavigationItemSelectedListener(this);
 
         Bundle extras = this.getIntent().getExtras();
         if (extras != null) {
             int source = extras.getInt(ACT_SOURCE);
             if (source == REGISTER_ACTIVITY) {
-                fragmentManager.beginTransaction().hide(active).show(this.profileFragment).commit();
+                this.getSupportFragmentManager().beginTransaction().hide(active).show(this.profileFragment).commit();
                 this.active = this.profileFragment;
+                this.scrollToolbarEnabled(true);
             }
         }
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        BottomNavigationView navigationView = this.findViewById(R.id.main_bottom_nav);
-        navigationView.setOnNavigationItemSelectedListener(this);
     }
 
     @Override
@@ -106,6 +120,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(this.homeFragment).commit();
                 this.active = this.homeFragment;
+                this.scrollToolbarEnabled(false);
                 return true;
             case R.id.menu_bottom_search:
                 fragmentManager.beginTransaction().hide(active).show(this.searchFragment).commit();
@@ -118,6 +133,7 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
 	        case R.id.menu_bottom_profile:
 		        fragmentManager.beginTransaction().hide(active).show(this.profileFragment).commit();
 		        this.active = this.profileFragment;
+                this.scrollToolbarEnabled(true);
 		        return true;
         }
         return false;
@@ -126,5 +142,33 @@ public class MainActivity extends AbstractActivity implements BottomNavigationVi
     @Override
     protected int getLayout() {
         return R.layout.activity_main;
+    }
+
+    @Override
+    public void scrollToolbarEnabled(boolean enabled) {
+        Toolbar toolbar = this.findViewById(R.id.main_toolbar);
+        AppBarLayout appBarLayout = this.findViewById(R.id.main_appbar);
+
+        AppBarLayout.LayoutParams layoutParams = (AppBarLayout.LayoutParams) toolbar.getLayoutParams();
+        CoordinatorLayout.LayoutParams appBarLayoutParams = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+
+        if (enabled) {
+            layoutParams.setScrollFlags(AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL | AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS);
+            appBarLayoutParams.setBehavior(new AppBarLayout.Behavior());
+        } else {
+            layoutParams.setScrollFlags(0);
+            appBarLayoutParams.setBehavior(null);
+        }
+        appBarLayout.setLayoutParams(appBarLayoutParams);
+    }
+
+    @Override
+    public void showProgressBar() {
+        this.findViewById(R.id.main_progress).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        this.findViewById(R.id.main_progress).setVisibility(View.GONE);
     }
 }

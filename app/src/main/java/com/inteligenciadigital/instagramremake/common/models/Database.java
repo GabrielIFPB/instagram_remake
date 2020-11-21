@@ -4,6 +4,8 @@ import android.net.Uri;
 import android.os.Handler;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,6 +14,7 @@ public class Database {
 	private static Set<User> users;
 	private static Set<Uri> storages;
 	private static Set<UserAuth> usersAuth;
+	private static HashMap<String, HashSet<Post>> posts;
 	private static Database INSTANCE;
 
 	private OnSuccessListener onSuccessListener;
@@ -23,6 +26,7 @@ public class Database {
 		users = new HashSet<>();
 		usersAuth = new HashSet<>();
 		storages = new HashSet<>();
+		posts = new HashMap<>();
 
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
 //		usersAuth.add(new UserAuth("joba@gmail.com", "1234"));
@@ -70,6 +74,47 @@ public class Database {
 
 	public Database addOnCompleteListener(OnCompleteListener listener) {
 		this.onCompleteListener = listener;
+		return this;
+	}
+
+	public Database findPosts(String uuid) {
+		timeout(() -> {
+			HashMap<String, HashSet<Post>> posts = Database.posts;
+			HashSet<Post> res = posts.get(uuid);
+
+			if (res == null)
+				res = new HashSet<>();
+
+			if (this.onSuccessListener != null)
+				this.onSuccessListener.onSuccess(new ArrayList<>(res));
+
+			if (this.onCompleteListener != null)
+				this.onCompleteListener.onComplete();
+		});
+		return this;
+	}
+
+	public Database findUser(String uuid) {
+		timeout(() -> {
+			Set<User> users = Database.users;
+			User res = null;
+
+			for (User user: users) {
+				if (user.getUuid().equals(uuid)) {
+					res = user;
+					break;
+				}
+			}
+
+			if (this.onSuccessListener != null && res != null)
+				this.onSuccessListener.onSuccess(res);
+			else if (this.onFailureListener != null)
+				this.onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
+
+			if (this.onCompleteListener != null)
+				this.onCompleteListener.onComplete();
+
+		});
 		return this;
 	}
 
@@ -135,7 +180,7 @@ public class Database {
 	}
 
 	private void timeout(Runnable r) {
-		new Handler().postDelayed(r, 2000);
+		new Handler().postDelayed(r, 1000);
 	}
 
 	public interface OnSuccessListener<T> {
