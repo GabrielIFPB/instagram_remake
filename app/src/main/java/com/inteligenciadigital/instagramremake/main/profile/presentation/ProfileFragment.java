@@ -74,7 +74,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		this.setHasOptionsMenu(true);
-		this.presenter.findUser();
 	}
 
 	@Nullable
@@ -82,7 +81,6 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	public View onCreateView(@NonNull LayoutInflater inflater,
 	                         @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
-		// TODO: 18/10/2020 app:layout_scrollFlags="scroll" at toolbar
 
 		View view = super.onCreateView(inflater, container, savedInstanceState);
 		this.postAdapter = new PostAdapter();
