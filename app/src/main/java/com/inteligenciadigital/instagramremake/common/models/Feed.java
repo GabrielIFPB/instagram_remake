@@ -1,0 +1,14 @@
+package com.inteligenciadigital.instagramremake.common.models;
+
+public class Feed extends Post {
+
+	private User publisher;
+
+	public User getPublisher() {
+		return publisher;
+	}
+
+	public void setPublisher(User publisher) {
+		this.publisher = publisher;
+	}
+}

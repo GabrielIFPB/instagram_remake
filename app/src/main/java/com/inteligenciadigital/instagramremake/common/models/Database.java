@@ -11,23 +11,26 @@ import java.util.Set;
 
 public class Database {
 
+	private static Database INSTANCE;
 	private static Set<User> users;
 	private static Set<Uri> storages;
 	private static Set<UserAuth> usersAuth;
 	private static HashMap<String, HashSet<Post>> posts;
-	private static Database INSTANCE;
+	private static HashMap<String, HashSet<Feed>> feeds;
 
 	private OnSuccessListener onSuccessListener;
 	private OnFailureListener onFailureListener;
 	private OnCompleteListener onCompleteListener;
-	private UserAuth userAuth;
+	private static UserAuth userAuth;
 
 	static {
 		users = new HashSet<>();
 		usersAuth = new HashSet<>();
 		storages = new HashSet<>();
 		posts = new HashMap<>();
+		feeds = new HashMap<>();
 
+		init();
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
 //		usersAuth.add(new UserAuth("joba@gmail.com", "1234"));
 //		usersAuth.add(new UserAuth("juliana@gmail.com", "12345"));
@@ -35,14 +38,15 @@ public class Database {
 	}
 
 	public static Database getInstance() {
-		if (INSTANCE == null) {
-			INSTANCE = new Database();
-			INSTANCE.init();
-		}
-		return INSTANCE;
+		return new Database();
+//		if (INSTANCE == null) {
+//			INSTANCE = new Database();
+//			INSTANCE.init();
+//		}
+//		return INSTANCE;
 	}
 
-	public void init() {
+	public static void init() {
 		String email = "user1@gmail.com";
 		String password = "123";
 		String name = "user1";
@@ -59,7 +63,7 @@ public class Database {
 		user.setEmail(email);
 
 		users.add(user);
-		this.userAuth = userAuth;
+		Database.userAuth = userAuth;
 	}
 
 	public <T> Database addOnSuccessListener(OnSuccessListener<T> listener) {
@@ -74,6 +78,23 @@ public class Database {
 
 	public Database addOnCompleteListener(OnCompleteListener listener) {
 		this.onCompleteListener = listener;
+		return this;
+	}
+
+	public Database findFeed(String uuid) {
+		timeout(() -> {
+			HashMap<String, HashSet<Feed>> feeds = Database.feeds;
+			HashSet<Feed> res = feeds.get(uuid);
+
+			if (res == null)
+				res = new HashSet<>();
+
+			if (this.onSuccessListener != null)
+				this.onSuccessListener.onSuccess(new ArrayList<>(res));
+
+			if (this.onCompleteListener != null)
+				this.onCompleteListener.onComplete();
+		});
 		return this;
 	}
 
@@ -120,7 +141,7 @@ public class Database {
 
 	public Database addPhoto(String uuid, Uri uri) {
 		timeout(() ->{
-			Database.users = Database.users;
+			Set<User> users = Database.users;
 			for (User user: users) {
 				if (user.getUuid().equals(uuid)) {
 					user.setUri(uri);
@@ -147,11 +168,11 @@ public class Database {
 
 			boolean added = users.add(user);
 			if (added) {
-				this.userAuth = userAuth;
+				Database.userAuth = userAuth;
 				if (this.onSuccessListener != null)
 					this.onSuccessListener.onSuccess(userAuth);
 			} else {
-				this.userAuth = null;
+				Database.userAuth = null;
 				if (this.onFailureListener != null)
 					this.onFailureListener.onFailure(new IllegalArgumentException("Usuário já existe"));
 			}
@@ -168,10 +189,10 @@ public class Database {
 			userAuth.setPassword(password);
 
 			if (usersAuth.contains(userAuth)) {
-				this.userAuth = userAuth;
+				Database.userAuth = userAuth;
 				this.onSuccessListener.onSuccess(userAuth);
 			} else {
-				this.userAuth = null;
+				Database.userAuth = null;
 				this.onFailureListener.onFailure(new IllegalArgumentException("Usuário não encontrado"));
 			}
 			this.onCompleteListener.onComplete();
@@ -196,6 +217,6 @@ public class Database {
 	}
 
 	public UserAuth getUser() {
-		return this.userAuth;
+		return Database.userAuth;
 	}
 }

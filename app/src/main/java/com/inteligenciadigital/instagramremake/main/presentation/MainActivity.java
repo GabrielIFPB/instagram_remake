@@ -19,9 +19,13 @@ import androidx.fragment.app.FragmentManager;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.camera.presentation.CameraFragment;
+import com.inteligenciadigital.instagramremake.main.home.datasource.HomeDataSource;
+import com.inteligenciadigital.instagramremake.main.home.datasource.HomeLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
+import com.inteligenciadigital.instagramremake.main.home.presentation.HomePresenter;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileLocaDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment;
@@ -39,6 +43,12 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
     private Fragment cameraFragment;
     private Fragment searchFragment;
     private Fragment active;
+
+    private HomePresenter homePresenter;
+    private ProfilePresenter profilePresenter;
+
+    public MainActivity() {
+    }
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -69,12 +79,14 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
     @Override
     protected void onInject() {
+        HomeDataSource homeDataSource = new HomeLocalDataSource();
         ProfileDataSource profileDataSource = new ProfileLocaDataSource();
 
-        ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource);
+        this.profilePresenter = new ProfilePresenter(profileDataSource);
+        this.homePresenter = new HomePresenter(homeDataSource);
 
-        this.homeFragment = HomeFragment.newInstance(this);
-        this.profileFragment = ProfileFragment.newInstance(this, profilePresenter);
+        this.homeFragment = HomeFragment.newInstance(this, this.homePresenter);
+        this.profileFragment = ProfileFragment.newInstance(this, this.profilePresenter);
         this.cameraFragment = new CameraFragment();
         this.searchFragment = new SearchFragment();
         
@@ -109,6 +121,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
                 this.getSupportFragmentManager().beginTransaction().hide(active).show(this.profileFragment).commit();
                 this.active = this.profileFragment;
                 this.scrollToolbarEnabled(true);
+                profilePresenter.findUser();
             }
         }
     }
@@ -120,6 +133,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
             case R.id.menu_bottom_home:
                 fragmentManager.beginTransaction().hide(active).show(this.homeFragment).commit();
                 this.active = this.homeFragment;
+                this.homePresenter.findFeed();
                 this.scrollToolbarEnabled(false);
                 return true;
             case R.id.menu_bottom_search:
@@ -133,6 +147,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 	        case R.id.menu_bottom_profile:
 		        fragmentManager.beginTransaction().hide(active).show(this.profileFragment).commit();
 		        this.active = this.profileFragment;
+		        this.profilePresenter.findUser();
                 this.scrollToolbarEnabled(true);
 		        return true;
         }
