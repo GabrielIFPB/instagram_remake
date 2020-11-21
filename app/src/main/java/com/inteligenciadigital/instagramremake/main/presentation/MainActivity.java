@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -23,7 +22,10 @@ import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.camera.presentation.CameraFragment;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
+import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileDataSource;
+import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileLocaDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment;
+import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfilePresenter;
 import com.inteligenciadigital.instagramremake.main.search.presentation.SearchFragment;
 
 public class MainActivity extends AbstractActivity implements MainView, BottomNavigationView.OnNavigationItemSelectedListener {
@@ -32,11 +34,11 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 	public static final int REGISTER_ACTIVITY = 11;
     private static final String ACT_SOURCE = "ACT_SOURCE";
 
-    Fragment homeFragment;
-    Fragment profileFragment;
-    Fragment cameraFragment;
-    Fragment searchFragment;
-    Fragment active;
+    private Fragment homeFragment;
+    private Fragment profileFragment;
+    private Fragment cameraFragment;
+    private Fragment searchFragment;
+    private Fragment active;
 
     public static void launch(Context context, int source) {
         Intent intent = new Intent(context, MainActivity.class);
@@ -56,6 +58,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
         Toolbar toolbar = this.findViewById(R.id.main_toolbar);
         this.setSupportActionBar(toolbar);
+        this.scrollToolbarEnabled(false);
 
         if (this.getSupportActionBar() != null) {
             Drawable drawable = this.getResources().getDrawable(R.drawable.ic_insta_camera);
@@ -66,8 +69,12 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
     @Override
     protected void onInject() {
+        ProfileDataSource profileDataSource = new ProfileLocaDataSource();
+
+        ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource);
+
         this.homeFragment = HomeFragment.newInstance(this);
-        this.profileFragment = ProfileFragment.newInstance(this);
+        this.profileFragment = ProfileFragment.newInstance(this, profilePresenter);
         this.cameraFragment = new CameraFragment();
         this.searchFragment = new SearchFragment();
         
@@ -153,5 +160,15 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
             appBarLayoutParams.setBehavior(null);
         }
         appBarLayout.setLayoutParams(appBarLayoutParams);
+    }
+
+    @Override
+    public void showProgressBar() {
+        this.findViewById(R.id.main_progress).setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideProgressBar() {
+        this.findViewById(R.id.main_progress).setVisibility(View.GONE);
     }
 }
