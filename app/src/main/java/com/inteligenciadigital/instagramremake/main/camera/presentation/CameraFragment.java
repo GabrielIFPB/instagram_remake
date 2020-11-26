@@ -6,18 +6,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.inteligenciadigital.instagramremake.R;
-import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
+import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends AbstractFragment {
 
 	public CameraFragment() {
 	}
@@ -34,9 +31,14 @@ public class CameraFragment extends Fragment {
 	                         @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
 		// TODO: 18/10/2020 app:layout_scrollFlags="scroll" at toolbar
-		View view = inflater.inflate(R.layout.fragment_main_gallery, container, false);
+		View view = inflater.inflate(R.layout.fragment_main_camera, container, false);
 
 		return view;
+	}
+
+	@Override
+	protected int getLayout() {
+		return R.layout.fragment_main_camera;
 	}
 
 	@Override
