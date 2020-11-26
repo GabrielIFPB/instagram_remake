@@ -18,10 +18,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.inteligenciadigital.instagramremake.main.camera.presentation.AddActivity;
 import com.inteligenciadigital.instagramremake.R;
-import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
-import com.inteligenciadigital.instagramremake.main.camera.presentation.CameraFragment;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeDataSource;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
@@ -40,7 +39,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
     private Fragment homeFragment;
     private Fragment profileFragment;
-    private Fragment cameraFragment;
+//    private Fragment cameraFragment;
     private Fragment searchFragment;
     private Fragment active;
 
@@ -87,7 +86,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
         this.homeFragment = HomeFragment.newInstance(this, this.homePresenter);
         this.profileFragment = ProfileFragment.newInstance(this, this.profilePresenter);
-        this.cameraFragment = new CameraFragment();
+//        this.cameraFragment = new CameraFragment();
         this.searchFragment = new SearchFragment();
         
         this.active = this.homeFragment;
@@ -96,8 +95,8 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
         fragmentManager.beginTransaction().add(R.id.main_fragment, this.profileFragment)
                 .hide(this.profileFragment).commit();
 
-        fragmentManager.beginTransaction().add(R.id.main_fragment, this.cameraFragment)
-                .hide(this.cameraFragment).commit();
+//        fragmentManager.beginTransaction().add(R.id.main_fragment, this.cameraFragment)
+//                .hide(this.cameraFragment).commit();
 
         fragmentManager.beginTransaction().add(R.id.main_fragment, this.searchFragment)
                 .hide(this.searchFragment).commit();
@@ -141,8 +140,9 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 	            this.active = this.searchFragment;
 	            return true;
 	        case R.id.menu_bottom_add:
-		        fragmentManager.beginTransaction().hide(active).show(this.cameraFragment).commit();
-		        this.active = this.cameraFragment;
+//		        fragmentManager.beginTransaction().hide(active).show(this.cameraFragment).commit();
+//		        this.active = this.cameraFragment;
+                AddActivity.launch(this);
 		        return true;
 	        case R.id.menu_bottom_profile:
 		        fragmentManager.beginTransaction().hide(active).show(this.profileFragment).commit();
