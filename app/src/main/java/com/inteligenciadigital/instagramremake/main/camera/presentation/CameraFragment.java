@@ -1,28 +1,46 @@
 package com.inteligenciadigital.instagramremake.main.camera.presentation;
 
+import android.hardware.Camera;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.component.CameraPreview;
+import com.inteligenciadigital.instagramremake.common.component.MediaHelper;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 public class CameraFragment extends AbstractFragment {
 
-	public CameraFragment() {
-	}
+	@BindView(R.id.camera_progress)
+	ProgressBar progressBar;
 
-	@Override
-	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		this.setHasOptionsMenu(true);
+	@BindView(R.id.camera_surface)
+	FrameLayout frameLayout;
+
+	@BindView(R.id.container_preview)
+	LinearLayout linearLayout;
+
+	@BindView(R.id.camera_image_view_picture)
+	Button button;
+
+	private MediaHelper mediaHelper;
+	private Camera camera;
+
+	public CameraFragment() {
 	}
 
 	@Nullable
@@ -30,20 +48,41 @@ public class CameraFragment extends AbstractFragment {
 	public View onCreateView(@NonNull LayoutInflater inflater,
 	                         @Nullable ViewGroup container,
 	                         @Nullable Bundle savedInstanceState) {
-		// TODO: 18/10/2020 app:layout_scrollFlags="scroll" at toolbar
-		View view = inflater.inflate(R.layout.fragment_main_camera, container, false);
+
+		View view = super.onCreateView(inflater, container, savedInstanceState);
+
+		if (this.getContext() != null ) {
+			this.mediaHelper = MediaHelper.getInstance(this);
+			if (this.mediaHelper.checkCameraHardware(this.getContext())) {
+				this.camera = this.mediaHelper.getCameraInstance();
+				CameraPreview cameraPreview = new CameraPreview(this.getContext(), this.camera);
+				this.frameLayout.addView(cameraPreview);
+			}
+		}
 
 		return view;
+	}
+
+	@OnClick(R.id.camera_image_view_picture)
+	public void onCameraButtonClick() {
+		this.progressBar.setVisibility(View.VISIBLE);
+		this.button.setVisibility(View.GONE);
+		this.camera.takePicture(null, null, (data, camera) -> {
+			this.mediaHelper.saveCameraFile(data);
+			this.progressBar.setVisibility(View.GONE);
+			this.button.setVisibility(View.VISIBLE);
+		});
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		if (this.camera != null)
+			this.camera.release();
 	}
 
 	@Override
 	protected int getLayout() {
 		return R.layout.fragment_main_camera;
-	}
-
-	@Override
-	public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
-		inflater.inflate(R.menu.menu_profile, menu);
-		super.onCreateOptionsMenu(menu, inflater);
 	}
 }

@@ -36,6 +36,7 @@
 		<com.google.android.material.appbar.AppBarLayout
 			android:id="@+id/appbar_layout"
 			android:layout_width="match_parent"
+			android:layout_alignParentBottom="true"
 			android:layout_height="?attr/actionBarSize" >
 
 			<com.google.android.material.tabs.TabLayout

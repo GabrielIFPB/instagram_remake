@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -46,6 +47,15 @@ public class AddActivity extends AbstractActivity {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 			this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 		}
+
+		this.tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(this.viewPager) {
+			@Override
+			public void onTabSelected(@NonNull TabLayout.Tab tab) {
+				super.onTabSelected(tab);
+				viewPager.setCurrentItem(tab.getPosition());
+				Log.d("TESTE", "" + tab.getPosition());
+			}
+		});
 	}
 
 	@Override
@@ -66,7 +76,7 @@ public class AddActivity extends AbstractActivity {
 	@Override
 	protected void onInject() {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(this.getSupportFragmentManager());
-		viewPager.setAdapter(adapter);
+		this.viewPager.setAdapter(adapter);
 
 		GalleryFragment galleryFragment = new GalleryFragment();
 		adapter.add(galleryFragment);
@@ -76,16 +86,16 @@ public class AddActivity extends AbstractActivity {
 
 		adapter.notifyDataSetChanged();
 
-		tabLayout.setupWithViewPager(viewPager);
+		this.tabLayout.setupWithViewPager(this.viewPager);
 
-		TabLayout.Tab tabLeft = tabLayout.getTabAt(0);
+		TabLayout.Tab tabLeft = this.tabLayout.getTabAt(0);
 		if (tabLeft != null)
 			tabLeft.setText(getString(R.string.gallery));
 
-		TabLayout.Tab tabRight = tabLayout.getTabAt(1);
+		TabLayout.Tab tabRight = this.tabLayout.getTabAt(1);
 		if (tabRight != null)
 			tabRight.setText(getString(R.string.photo));
 
-		viewPager.setCurrentItem(adapter.getCount() - 1);
+		this.viewPager.setCurrentItem(adapter.getCount() - 1);
 	}
 }
