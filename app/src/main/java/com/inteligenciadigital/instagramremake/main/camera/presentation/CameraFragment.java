@@ -1,6 +1,7 @@
 package com.inteligenciadigital.instagramremake.main.camera.presentation;
 
 import android.hardware.Camera;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -39,8 +40,19 @@ public class CameraFragment extends AbstractFragment {
 
 	private MediaHelper mediaHelper;
 	private Camera camera;
+	private AddView addView;
 
 	public CameraFragment() {
+	}
+
+	public static CameraFragment newInstance(AddView addView) {
+		CameraFragment cameraFragment = new CameraFragment();
+		cameraFragment.setAddView(addView);
+		return cameraFragment;
+	}
+
+	private void setAddView(AddView addView) {
+		this.addView = addView;
 	}
 
 	@Nullable
@@ -68,9 +80,12 @@ public class CameraFragment extends AbstractFragment {
 		this.progressBar.setVisibility(View.VISIBLE);
 		this.button.setVisibility(View.GONE);
 		this.camera.takePicture(null, null, (data, camera) -> {
-			this.mediaHelper.saveCameraFile(data);
 			this.progressBar.setVisibility(View.GONE);
 			this.button.setVisibility(View.VISIBLE);
+
+			Uri uri = this.mediaHelper.saveCameraFile(data);
+			if (uri != null)
+				this.addView.onImageLoaded(uri);
 		});
 	}
 

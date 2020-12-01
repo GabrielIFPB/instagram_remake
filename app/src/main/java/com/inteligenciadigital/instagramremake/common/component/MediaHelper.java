@@ -69,6 +69,9 @@ public class MediaHelper {
 		if (INSTANCE == null) {
 			MediaHelper mediaHelper = new MediaHelper();
 			INSTANCE = new WeakReference<>(mediaHelper);
+		} else if (INSTANCE.get() == null) {
+			MediaHelper mediaHelper = new MediaHelper();
+			INSTANCE = new WeakReference<>(mediaHelper);
 		}
 	}
 
@@ -209,14 +212,15 @@ public class MediaHelper {
 		return camera;
 	}
 
-	public void saveCameraFile(byte[] data) {
+	public Uri saveCameraFile(byte[] data) {
 		File pictureFile = this.createCameraFile(true);
 
 		if (pictureFile == null) {
 			Log.d("TESTE", "Error creating media file, check storage permission");
-			return;
+			return null;
 		}
 
+		File outputMediaFile = null;
 		try {
 			FileOutputStream fileOutputStream = new FileOutputStream(pictureFile);
 
@@ -239,10 +243,11 @@ public class MediaHelper {
 			fileOutputStream.close();
 
 			Matrix matrix = new Matrix();
-			File outputMediaFile = this.createCameraFile(false);
+			outputMediaFile = this.createCameraFile(false);
+
 			if (outputMediaFile == null) {
 				Log.d("TESTE", "Error creating media file, check storage permissions");
-				return;
+				return null;
 			}
 
 			Log.d("TESTE", realImage.getWidth() + " " + realImage.getHeight());
@@ -258,6 +263,7 @@ public class MediaHelper {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		return Uri.fromFile(outputMediaFile);
 	}
 
 	private static Bitmap rotate(Bitmap bitmap, int degree) {

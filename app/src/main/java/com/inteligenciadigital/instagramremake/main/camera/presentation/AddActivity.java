@@ -3,6 +3,7 @@ package com.inteligenciadigital.instagramremake.main.camera.presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,7 +20,7 @@ import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 
 import butterknife.BindView;
 
-public class AddActivity extends AbstractActivity {
+public class AddActivity extends AbstractActivity implements AddView {
 
 	@BindView(R.id.add_viewpager)
 	ViewPager viewPager;
@@ -69,19 +70,14 @@ public class AddActivity extends AbstractActivity {
 	}
 
 	@Override
-	protected int getLayout() {
-		return R.layout.activity_add;
-	}
-
-	@Override
 	protected void onInject() {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(this.getSupportFragmentManager());
 		this.viewPager.setAdapter(adapter);
 
-		GalleryFragment galleryFragment = new GalleryFragment();
+		GalleryFragment galleryFragment = new GalleryFragment();//.newInstance(this);
 		adapter.add(galleryFragment);
 
-		CameraFragment cameraFragment = new CameraFragment();
+		CameraFragment cameraFragment = CameraFragment.newInstance(this);
 		adapter.add(cameraFragment);
 
 		adapter.notifyDataSetChanged();
@@ -97,5 +93,16 @@ public class AddActivity extends AbstractActivity {
 			tabRight.setText(getString(R.string.photo));
 
 		this.viewPager.setCurrentItem(adapter.getCount() - 1);
+	}
+
+	@Override
+	public void onImageLoaded(Uri uri) {
+		AddCaptionActivity.launch(this, uri);
+		this.finish();
+	}
+
+	@Override
+	protected int getLayout() {
+		return R.layout.activity_add;
 	}
 }
