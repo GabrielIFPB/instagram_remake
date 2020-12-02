@@ -17,8 +17,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.Post;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
@@ -32,10 +34,6 @@ import butterknife.BindView;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends AbstractFragment<ProfilePresenter> implements MainView.ProfileView {
-
-	private MainView mainView;
-
-	private PostAdapter postAdapter;
 
 	@BindView(R.id.profile_recycler)
 	RecyclerView recyclerView;
@@ -54,6 +52,13 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 	@BindView(R.id.profile_text_view_post_count)
 	TextView textViewPost;
+
+	@BindView(R.id.profile_navigation_tabs)
+	BottomNavigationView bottomNavigationView;
+
+	private MainView mainView;
+
+	private PostAdapter postAdapter;
 
 	public ProfileFragment() {
 	}
@@ -74,6 +79,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	public void onActivityCreated(@Nullable Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
 		this.setHasOptionsMenu(true);
+		this.bottomNavigationView.setOnNavigationItemSelectedListener(menuItem -> {
+			switch (menuItem.getItemId()) {
+				case R.id.menu_profile_grid:
+					this.recyclerView.setLayoutManager(new GridLayoutManager(this.getContext(), 3));
+					return true;
+				case R.id.menu_profile_list:
+					this.recyclerView.setLayoutManager(new LinearLayoutManager(this.getContext()));
+					return true;
+			}
+			return false;
+		});
 	}
 
 	@Nullable
@@ -89,6 +105,12 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 		this.recyclerView.setAdapter(this.postAdapter);
 
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.presenter.findUser();
 	}
 
 	@Override
@@ -169,7 +191,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 	private static class PostViewHolder extends RecyclerView.ViewHolder {
 
-		private ImageView imagePost;
+		private final ImageView imagePost;
 
 		public PostViewHolder(@NonNull View itemView) {
 			super(itemView);

@@ -3,8 +3,10 @@ package com.inteligenciadigital.instagramremake.main.camera.presentation;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -15,10 +17,12 @@ import androidx.viewpager.widget.ViewPager;
 import com.google.android.material.tabs.TabLayout;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
+import com.inteligenciadigital.instagramremake.main.camera.datasource.GalleryDataSource;
+import com.inteligenciadigital.instagramremake.main.camera.datasource.GalleryLocalDataSource;
 
 import butterknife.BindView;
 
-public class AddActivity extends AbstractActivity {
+public class AddActivity extends AbstractActivity implements AddView {
 
 	@BindView(R.id.add_viewpager)
 	ViewPager viewPager;
@@ -46,6 +50,15 @@ public class AddActivity extends AbstractActivity {
 		if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
 			this.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 		}
+
+		this.tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(this.viewPager) {
+			@Override
+			public void onTabSelected(@NonNull TabLayout.Tab tab) {
+				super.onTabSelected(tab);
+				viewPager.setCurrentItem(tab.getPosition());
+				Log.d("TESTE", "" + tab.getPosition());
+			}
+		});
 	}
 
 	@Override
@@ -59,33 +72,42 @@ public class AddActivity extends AbstractActivity {
 	}
 
 	@Override
-	protected int getLayout() {
-		return R.layout.activity_add;
-	}
-
-	@Override
 	protected void onInject() {
 		ViewPagerAdapter adapter = new ViewPagerAdapter(this.getSupportFragmentManager());
-		viewPager.setAdapter(adapter);
+		this.viewPager.setAdapter(adapter);
 
-		GalleryFragment galleryFragment = new GalleryFragment();
+		GalleryDataSource galleryDataSource = new GalleryLocalDataSource();
+		GalleryPresenter galleryPresenter = new GalleryPresenter(galleryDataSource);
+
+		GalleryFragment galleryFragment = GalleryFragment.newInstance(this, galleryPresenter);
 		adapter.add(galleryFragment);
 
-		CameraFragment cameraFragment = new CameraFragment();
+		CameraFragment cameraFragment = CameraFragment.newInstance(this);
 		adapter.add(cameraFragment);
 
 		adapter.notifyDataSetChanged();
 
-		tabLayout.setupWithViewPager(viewPager);
+		this.tabLayout.setupWithViewPager(this.viewPager);
 
-		TabLayout.Tab tabLeft = tabLayout.getTabAt(0);
+		TabLayout.Tab tabLeft = this.tabLayout.getTabAt(0);
 		if (tabLeft != null)
 			tabLeft.setText(getString(R.string.gallery));
 
-		TabLayout.Tab tabRight = tabLayout.getTabAt(1);
+		TabLayout.Tab tabRight = this.tabLayout.getTabAt(1);
 		if (tabRight != null)
 			tabRight.setText(getString(R.string.photo));
 
-		viewPager.setCurrentItem(adapter.getCount() - 1);
+		this.viewPager.setCurrentItem(adapter.getCount() - 1);
+	}
+
+	@Override
+	public void onImageLoaded(Uri uri) {
+		AddCaptionActivity.launch(this, uri);
+		this.finish();
+	}
+
+	@Override
+	protected int getLayout() {
+		return R.layout.activity_add;
 	}
 }
