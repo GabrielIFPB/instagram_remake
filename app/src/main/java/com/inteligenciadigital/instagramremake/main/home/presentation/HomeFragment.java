@@ -30,7 +30,6 @@ import butterknife.BindView;
 public class HomeFragment extends AbstractFragment<HomePresenter> implements MainView.HomeView {
 
 	private MainView mainView;
-
 	private FeedAdapter feedAdapter;
 
 	@BindView(R.id.home_recycler)
@@ -70,6 +69,12 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 		this.recyclerView.setAdapter(this.feedAdapter);
 
 		return view;
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		this.presenter.findFeed();
 	}
 
 	@Override
