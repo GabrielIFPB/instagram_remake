@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.models.Post;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
 import com.inteligenciadigital.instagramremake.main.presentation.MainView;
@@ -55,6 +57,9 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 	@BindView(R.id.profile_navigation_tabs)
 	BottomNavigationView bottomNavigationView;
+
+	@BindView(R.id.profile_button_edit_profile)
+	Button button;
 
 	private MainView mainView;
 
@@ -110,7 +115,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.presenter.findUser();
+		this.presenter.findUser(Database.getInstance().getUser().getUUID());
 	}
 
 	@Override
@@ -151,11 +156,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	}
 
 	@Override
-	public void showData(String name, String following, String followers, String posts) {
+	public void showData(String name, String following, String followers, String posts, boolean editProfile) {
 		this.textViewUserName.setText(name);
 		this.textViewFollowers.setText(followers);
 		this.textViewFollowing.setText(following);
 		this.textViewPost.setText(posts);
+
+		if (editProfile) {
+			this.button.setText(R.string.edit_profile);
+		} else {
+			this.button.setText(R.string.follow);
+		}
 	}
 
 	@Override

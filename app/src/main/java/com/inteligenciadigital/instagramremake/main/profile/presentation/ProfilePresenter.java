@@ -1,5 +1,6 @@
 package com.inteligenciadigital.instagramremake.main.profile.presentation;
 
+import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.models.Post;
 import com.inteligenciadigital.instagramremake.common.models.User;
 import com.inteligenciadigital.instagramremake.common.models.UserProfile;
@@ -23,11 +24,13 @@ public class ProfilePresenter implements Presenter<UserProfile> {
 		User user = userProfile.getUser();
 		List<Post> posts = userProfile.getPosts();
 
+		boolean editProfile = user.getUuid().equals(Database.getInstance().getUser().getUUID());
+
 		String following = String.valueOf(user.getFollowing());
 		String followers = String.valueOf(user.getFollowers());
 		String userPosts = String.valueOf(user.getPosts());
 
-		this.view.showData(user.getName(), following, followers, userPosts);
+		this.view.showData(user.getName(), following, followers, userPosts, editProfile);
 
 		this.view.showPosts(posts);
 
@@ -50,8 +53,8 @@ public class ProfilePresenter implements Presenter<UserProfile> {
 		this.view = view;
 	}
 
-	public void findUser() {
+	public void findUser(String user) {
 		this.view.showProgressBar();
-		this.datasource.findUser(this);
+		this.datasource.findUser(user, this);
 	}
 }

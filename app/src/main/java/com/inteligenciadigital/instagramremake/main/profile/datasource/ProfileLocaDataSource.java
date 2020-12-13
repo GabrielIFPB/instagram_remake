@@ -11,13 +11,13 @@ import java.util.List;
 public class ProfileLocaDataSource implements ProfileDataSource {
 
 	@Override
-	public void findUser(Presenter<UserProfile> presenter) {
+	public void findUser(String user, Presenter<UserProfile> presenter) {
 		Database database = Database.getInstance();
-		database.findUser(database.getUser().getUUID())
-				.addOnSuccessListener((Database.OnSuccessListener<User>) user -> {
-					database.findPosts(user.getUuid())
+		database.findUser(user)
+				.addOnSuccessListener((Database.OnSuccessListener<User>) user1 -> {
+					database.findPosts(user1.getUuid())
 							.addOnSuccessListener((Database.OnSuccessListener<List<Post>>) posts -> {
-								presenter.onSuccess(new UserProfile(user, posts));
+								presenter.onSuccess(new UserProfile(user1, posts));
 								presenter.onComplete();
 							});
 				});
