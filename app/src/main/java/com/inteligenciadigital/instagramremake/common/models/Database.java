@@ -8,6 +8,7 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public class Database {
@@ -33,7 +34,17 @@ public class Database {
 		feed = new HashMap<>();
 		followers = new HashMap<>();
 
-//		init();
+		String email = "jeronimo@gmail.com";
+		String password = "123";
+		String name = "jeronimo";
+		init(email, password, name);
+
+		for (int i = 0; i < 30; i++) {
+			email = "user" + i + "@gmail.com";
+			password = "1232";
+			name = "gabriel" + i;
+			init(email, password, name);
+		}
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
 //		usersAuth.add(new UserAuth("joba@gmail.com", "1234"));
 //		usersAuth.add(new UserAuth("juliana@gmail.com", "12345"));
@@ -49,11 +60,7 @@ public class Database {
 //		return INSTANCE;
 	}
 
-	public static void init() {
-		String email = "user1@gmail.com";
-		String password = "123";
-		String name = "user1";
-
+	public static void init(String email, String password, String name) {
 		UserAuth userAuth = new UserAuth();
 		userAuth.setEmail(email);
 		userAuth.setPassword(password);
@@ -97,6 +104,21 @@ public class Database {
 
 			if (this.onCompleteListener != null)
 				this.onCompleteListener.onComplete();
+		});
+		return this;
+	}
+
+	public Database findUsers(String uuid, String query) {
+		timeout(() -> {
+			List<User> users = new ArrayList();
+			for (User user: Database.users) {
+				if (!user.getUuid().equals(uuid) && user.getName().contains(query)) {
+					users.add(user);
+				}
+			}
+
+			this.onSuccessListener.onSuccess(users);
+			this.onCompleteListener.onComplete();
 		});
 		return this;
 	}
