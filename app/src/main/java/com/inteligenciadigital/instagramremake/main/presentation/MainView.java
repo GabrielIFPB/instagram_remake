@@ -15,11 +15,14 @@ public interface MainView extends ViewProgressBar {
 
 	void showProfile(String user);
 
+	void disposeProfileDetail();
+
 	interface ProfileView extends ViewProgressBar {
 
 		void showPhoto(Uri uri);
 
-		void showData(String name, String following, String followers, String posts, boolean editProfile);
+		void showData(String name, String following, String followers,
+		              String posts, boolean editProfile, boolean follow);
 
 		void showPosts(List<Post> posts);
 	}
