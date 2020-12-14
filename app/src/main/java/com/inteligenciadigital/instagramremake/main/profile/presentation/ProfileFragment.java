@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -33,6 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileFragment extends AbstractFragment<ProfilePresenter> implements MainView.ProfileView {
@@ -115,7 +117,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	@Override
 	public void onResume() {
 		super.onResume();
-		this.presenter.findUser(Database.getInstance().getUser().getUUID());
+		this.presenter.findUser();
 	}
 
 	@Override
@@ -140,6 +142,17 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	}
 
 	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				if (!this.presenter.getUser().equals(Database.getInstance().getUser().getUUID()))
+					this.mainView.disposeProfileDetail();
+				break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
+
+	@Override
 	public void showPhoto(Uri uri) {
 		if (this.getContext() != null) {
 			ContentResolver resolver = this.getContext().getContentResolver();
@@ -156,7 +169,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	}
 
 	@Override
-	public void showData(String name, String following, String followers, String posts, boolean editProfile) {
+	public void showData(String name, String following, String followers, String posts, boolean editProfile, boolean follow) {
 		this.textViewUserName.setText(name);
 		this.textViewFollowers.setText(followers);
 		this.textViewFollowing.setText(following);
@@ -164,9 +177,16 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 		if (editProfile) {
 			this.button.setText(R.string.edit_profile);
+		} else if (follow) {
+			this.button.setText(R.string.unfollow);
 		} else {
 			this.button.setText(R.string.follow);
 		}
+	}
+
+	@OnClick(R.id.profile_button_edit_profile)
+	public void onButtonFollowClick() {
+
 	}
 
 	@Override

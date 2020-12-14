@@ -15,6 +15,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,6 +47,8 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 	//    private Fragment cameraFragment;
 	private Fragment searchFragment;
 	private Fragment active;
+
+	private ProfileFragment profileDetailFragment;
 
 	private HomePresenter homePresenter;
 	private ProfilePresenter profilePresenter;
@@ -129,7 +132,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 				this.getSupportFragmentManager().beginTransaction().hide(active).show(this.profileFragment).commit();
 				this.active = this.profileFragment;
 				this.scrollToolbarEnabled(true);
-				this.profilePresenter.findUser(Database.getInstance().getUser().getUUID());
+				this.profilePresenter.findUser();
 			}
 		}
 	}
@@ -139,15 +142,19 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 		FragmentManager fragmentManager = this.getSupportFragmentManager();
 		switch (item.getItemId()) {
 			case R.id.menu_bottom_home:
+				if (this.profileDetailFragment != null)
+					this.disposeProfileDetail();
 				fragmentManager.beginTransaction().hide(active).show(this.homeFragment).commit();
 				this.active = this.homeFragment;
 				this.homePresenter.findFeed();
 				this.scrollToolbarEnabled(false);
 				return true;
 			case R.id.menu_bottom_search:
-				fragmentManager.beginTransaction().hide(active).show(this.searchFragment).commit();
-				this.active = this.searchFragment;
-				this.scrollToolbarEnabled(false);
+				if (this.profileDetailFragment == null) {
+					fragmentManager.beginTransaction().hide(active).show(this.searchFragment).commit();
+					this.active = this.searchFragment;
+					this.scrollToolbarEnabled(false);
+				}
 				return true;
 			case R.id.menu_bottom_add:
 //		        fragmentManager.beginTransaction().hide(active).show(this.cameraFragment).commit();
@@ -155,9 +162,11 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 				AddActivity.launch(this);
 				return true;
 			case R.id.menu_bottom_profile:
+				if (this.profileDetailFragment != null)
+					this.disposeProfileDetail();
 				fragmentManager.beginTransaction().hide(active).show(this.profileFragment).commit();
 				this.active = this.profileFragment;
-				this.profilePresenter.findUser(Database.getInstance().getUser().getUUID());
+				this.profilePresenter.findUser();
 				this.scrollToolbarEnabled(true);
 				return true;
 		}
@@ -189,12 +198,43 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
 	@Override
 	public void showProfile(String user) {
-		this.getSupportFragmentManager().beginTransaction()
-				.hide(this.active).show(this.profileFragment).commit();
+		ProfileDataSource profileDataSource = new ProfileLocaDataSource();
+		ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource, user);
 
-		this.active = this.profileFragment;
+		this.profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);
+
+		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
+
+		transaction.add(R.id.main_fragment, this.profileDetailFragment, "detail");
+
+		transaction.hide(this.active);
+		transaction.commit();
+
 		this.scrollToolbarEnabled(true);
-		this.profilePresenter.findUser(user);
+
+		if (this.getSupportActionBar() != null) {
+			Drawable drawable = this.findDrawable(R.drawable.ic_arrow_back);
+			this.getSupportActionBar().setHomeAsUpIndicator(drawable);
+			this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+	}
+
+	@Override
+	public void disposeProfileDetail() {
+		if (this.getSupportActionBar() != null) {
+			Drawable drawable = this.getResources().getDrawable(R.drawable.ic_insta_camera);
+			this.getSupportActionBar().setHomeAsUpIndicator(drawable);
+			this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		}
+
+		FragmentTransaction transaction = this.getSupportFragmentManager().beginTransaction();
+		transaction.remove(this.profileDetailFragment);
+
+		transaction.show(active);
+		transaction.commit();
+
+		this.profileDetailFragment = null;
+
 	}
 
 	@Override
