@@ -3,6 +3,7 @@ package com.inteligenciadigital.instagramremake.common.models;
 import android.icu.text.MessagePattern;
 import android.net.Uri;
 import android.os.Handler;
+import android.provider.ContactsContract;
 
 import java.net.URI;
 import java.util.ArrayList;
@@ -88,6 +89,44 @@ public class Database {
 
 	public Database addOnCompleteListener(OnCompleteListener listener) {
 		this.onCompleteListener = listener;
+		return this;
+	}
+
+	public Database follow(String uuidMe, String uuid) {
+		timeout(() -> {
+			HashMap<String, HashSet<String>> followersMap = Database.followers;
+
+			HashSet<String> followers = followersMap.get(uuid);
+
+			if (followers == null) {
+				followers = new HashSet<>();
+				followersMap.put(uuid, followers);
+			}
+
+			followers.add(uuidMe);
+
+			if (onSuccessListener != null)
+				onSuccessListener.onSuccess(true);
+		});
+		return this;
+	}
+
+	public Database unfollow(String uuidMe, String uuid) {
+		timeout(() -> {
+			HashMap<String, HashSet<String>> followersMap = Database.followers;
+
+			HashSet<String> followers = followersMap.get(uuid);
+
+			if (followers == null) {
+				followers = new HashSet<>();
+				followersMap.put(uuid, followers);
+			}
+
+			followers.remove(uuidMe);
+
+			if (onSuccessListener != null)
+				onSuccessListener.onSuccess(true);
+		});
 		return this;
 	}
 
