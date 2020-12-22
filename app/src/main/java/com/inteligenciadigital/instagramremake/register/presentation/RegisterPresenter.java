@@ -2,13 +2,13 @@ package com.inteligenciadigital.instagramremake.register.presentation;
 
 import android.net.Uri;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.inteligenciadigital.instagramremake.R;
-import com.inteligenciadigital.instagramremake.common.models.UserAuth;
 import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
 import com.inteligenciadigital.instagramremake.common.util.Strings;
 import com.inteligenciadigital.instagramremake.register.datasource.RegisterDataSource;
 
-public class RegisterPresenter implements Presenter<UserAuth> {
+public class RegisterPresenter implements Presenter<FirebaseUser> {
 
 	private RegisterView registerView;
 	private RegisterView.EmailView emailView;
@@ -69,7 +69,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 		this.name = name;
 
 		this.namePasswordView.showProgressBar();
-		this.dataSource.createUser(name, this.email, password, this);
+		this.dataSource.createUser(name.toLowerCase(), this.email, password, this);
 	}
 
 	public void setUri(Uri uri) {
@@ -99,7 +99,7 @@ public class RegisterPresenter implements Presenter<UserAuth> {
 	}
 
 	@Override
-	public void onSuccess(UserAuth userAuth) {
+	public void onSuccess(FirebaseUser userAuth) {
 		this.registerView.showNextView(RegisterSteps.WELCOME);
 	}
 

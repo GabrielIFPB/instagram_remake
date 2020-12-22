@@ -20,6 +20,7 @@ import com.inteligenciadigital.instagramremake.common.component.MediaHelper;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.presentation.MainActivity;
 import com.inteligenciadigital.instagramremake.register.datasource.RegisterDataSource;
+import com.inteligenciadigital.instagramremake.register.datasource.RegisterFireDataSource;
 import com.inteligenciadigital.instagramremake.register.datasource.RegisterLocalDataSource;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
@@ -59,7 +60,7 @@ public class RegisterActivity extends AbstractActivity implements RegisterView, 
 
 	@Override
 	protected void onInject() {
-		RegisterDataSource dataSource = new RegisterLocalDataSource();
+		RegisterDataSource dataSource = new RegisterFireDataSource();
 		this.presenter = new RegisterPresenter(dataSource);
 		this.presenter.setRegisterView(this);
 
