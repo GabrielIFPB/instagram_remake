@@ -4,12 +4,14 @@ import android.os.Bundle;
 import android.widget.EditText;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.models.UserAuth;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.common.component.LoadingButton;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
+import com.inteligenciadigital.instagramremake.login.datasource.LoginFireDataSource;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.presentation.MainActivity;
 import com.inteligenciadigital.instagramremake.register.presentation.RegisterActivity;
@@ -38,14 +40,14 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 		super.onCreate(savedInstanceState);
 		this.setStatusBarDark();
 
-		UserAuth userAuth = Database.getInstance().getUser();
-		if (userAuth != null)
+		String user = FirebaseAuth.getInstance().getUid();
+		if (user != null)
 			this.onUserLogged();
 	}
 
 	@Override
 	protected void onInject() {
-		LoginDataSource dataSource = new LoginLocalDataSource();
+		LoginDataSource dataSource = new LoginFireDataSource();
 		this.loginPresenter = new LoginPresenter(this, dataSource);
 	}
 
