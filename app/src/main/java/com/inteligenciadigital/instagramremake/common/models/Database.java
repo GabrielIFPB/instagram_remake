@@ -35,17 +35,17 @@ public class Database {
 		feed = new HashMap<>();
 		followers = new HashMap<>();
 
-		String email = "jeronimo@gmail.com";
-		String password = "123";
-		String name = "jeronimo";
-		init(email, password, name);
-
-		for (int i = 0; i < 30; i++) {
-			email = "user" + i + "@gmail.com";
-			password = "1232";
-			name = "gabriel" + i;
-			init(email, password, name);
-		}
+//		String email = "jeronimo@gmail.com";
+//		String password = "123";
+//		String name = "jeronimo";
+//		init(email, password, name);
+//
+//		for (int i = 0; i < 30; i++) {
+//			email = "user" + i + "@gmail.com";
+//			password = "1232";
+//			name = "gabriel" + i;
+//			init(email, password, name);
+//		}
 //		usersAuth.add(new UserAuth("gabriel@gmail.com", "123456"));
 //		usersAuth.add(new UserAuth("joba@gmail.com", "1234"));
 //		usersAuth.add(new UserAuth("juliana@gmail.com", "12345"));

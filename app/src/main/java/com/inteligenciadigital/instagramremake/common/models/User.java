@@ -11,6 +11,7 @@ public class User {
 	private int followers;
 	private int posts;
 	private Uri uri;
+	private String photoUrl;
 
 	public String getUuid() {
 		return uuid;
@@ -66,6 +67,14 @@ public class User {
 
 	public void setPosts(int posts) {
 		this.posts = posts;
+	}
+
+	public String getPhotoUrl() {
+		return photoUrl;
+	}
+
+	public void setPhotoUrl(String photoUrl) {
+		this.photoUrl = photoUrl;
 	}
 
 	@Override
