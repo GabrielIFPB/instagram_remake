@@ -1,12 +1,13 @@
 package com.inteligenciadigital.instagramremake.login.presentation;
 
+import com.google.firebase.auth.FirebaseUser;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.UserAuth;
 import com.inteligenciadigital.instagramremake.common.presenter.Presenter;
 import com.inteligenciadigital.instagramremake.common.util.Strings;
 import com.inteligenciadigital.instagramremake.login.datasource.LoginDataSource;
 
-public class LoginPresenter implements Presenter<UserAuth> {
+public class LoginPresenter implements Presenter<FirebaseUser> {
 
 	private final LoginView loginView;
 	private final LoginDataSource dataSource;
@@ -28,7 +29,7 @@ public class LoginPresenter implements Presenter<UserAuth> {
 	}
 
 	@Override
-	public void onSuccess(UserAuth userAuth) {
+	public void onSuccess(FirebaseUser userAuth) {
 		this.loginView.onUserLogged();
 	}
 
