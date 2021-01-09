@@ -120,6 +120,12 @@ public class ProfileFireDataSource implements ProfileDataSource {
 				.addOnCompleteListener(task -> {
 					User user = task.getResult().toObject(User.class);
 					FirebaseFirestore.getInstance().collection("followers")
+							.document(uid)
+							.collection("followers")
+							.document(FirebaseAuth.getInstance().getUid())
+							.delete();
+
+					FirebaseFirestore.getInstance().collection("feeds")
 							.document(FirebaseAuth.getInstance().getUid())
 							.collection("posts")
 							.whereEqualTo("publisher.uuid", uid)

@@ -19,22 +19,19 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.main.camera.presentation.AddActivity;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeDataSource;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeFireDataSource;
-import com.inteligenciadigital.instagramremake.main.home.datasource.HomeLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomePresenter;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileFireDataSource;
-import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileLocaDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfilePresenter;
 import com.inteligenciadigital.instagramremake.main.search.datasource.SearchDataSource;
-import com.inteligenciadigital.instagramremake.main.search.datasource.SearchLocalDataSource;
+import com.inteligenciadigital.instagramremake.main.search.datasource.SearchFireDataSource;
 import com.inteligenciadigital.instagramremake.main.search.presentation.SearchFragment;
 import com.inteligenciadigital.instagramremake.main.search.presentation.SearchPresenter;
 
@@ -98,7 +95,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 		this.profileFragment = ProfileFragment.newInstance(this, this.profilePresenter);
 //        this.cameraFragment = new CameraFragment();
 
-		SearchDataSource searchDataSource = new SearchLocalDataSource();
+		SearchDataSource searchDataSource = new SearchFireDataSource();
 		searchPresenter = new SearchPresenter(searchDataSource);
 
 		this.searchFragment = SearchFragment.newInstance(this, this.searchPresenter);
