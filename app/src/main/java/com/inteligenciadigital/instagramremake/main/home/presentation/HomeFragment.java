@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.Feed;
 import com.inteligenciadigital.instagramremake.common.models.Post;
@@ -147,6 +148,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 		}
 
 		public void bind(Feed feed) {
+			Glide.with(itemView.getContext()).load(feed.getPhotoUrl()).into(this.imageUser);
 			this.imagePost.setImageURI(feed.getUri());
 			this.textViewCaption.setText(feed.getCaption());
 

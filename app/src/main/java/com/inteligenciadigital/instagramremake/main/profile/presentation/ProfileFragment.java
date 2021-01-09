@@ -22,7 +22,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.Database;
 import com.inteligenciadigital.instagramremake.common.models.Post;
@@ -145,7 +147,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
 		switch (item.getItemId()) {
 			case android.R.id.home:
-				if (!this.presenter.getUser().equals(Database.getInstance().getUser().getUUID()))
+				if (!this.presenter.getUser().equals(FirebaseAuth.getInstance().getUid()))
 					this.mainView.disposeProfileDetail();
 				break;
 		}
@@ -153,19 +155,8 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 	}
 
 	@Override
-	public void showPhoto(Uri uri) {
-		if (this.getContext() != null) {
-			ContentResolver resolver = this.getContext().getContentResolver();
-			if (resolver != null) {
-				try {
-					Bitmap bitmap = MediaStore.Images.Media.getBitmap(resolver, uri);
-					this.imageViewProfile.setImageBitmap(bitmap);
-				} catch (IOException e) {
-					Log.e("Teste", e.getMessage(), e);
-					e.printStackTrace();
-				}
-			}
-		}
+	public void showPhoto(String uri) {
+		Glide.with(this.getContext()).load(uri).into(this.imageViewProfile);
 	}
 
 	@Override
@@ -177,6 +168,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 		if (editProfile) {
 			this.button.setText(R.string.edit_profile);
+			this.button.setTag(null);
 		} else if (follow) {
 			this.button.setText(R.string.unfollow);
 			this.button.setTag(false);
@@ -188,13 +180,15 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 
 	@OnClick(R.id.profile_button_edit_profile)
 	public void onButtonFollowClick() {
-		boolean follow = (boolean) this.button.getTag();
-		if (follow)
-			this.button.setText(R.string.unfollow);
-		else
-			this.button.setText(R.string.follow);
-		this.presenter.follow(follow);
-		this.button.setTag(!follow);
+		Boolean follow = (Boolean) this.button.getTag();
+		if (follow != null) {
+			if (follow)
+				this.button.setText(R.string.unfollow);
+			else
+				this.button.setText(R.string.follow);
+			this.presenter.follow(follow);
+			this.button.setTag(!follow);
+		}
 	}
 
 	@Override
@@ -238,7 +232,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 		}
 
 		public void bind(Post post) {
-			this.imagePost.setImageURI(post.getUri());
+			Glide.with(this.itemView.getContext()).load(post.getUri()).into(this.imagePost);
 		}
 	}
 }

@@ -24,10 +24,12 @@ import com.inteligenciadigital.instagramremake.main.camera.presentation.AddActiv
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeDataSource;
+import com.inteligenciadigital.instagramremake.main.home.datasource.HomeFireDataSource;
 import com.inteligenciadigital.instagramremake.main.home.datasource.HomeLocalDataSource;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomeFragment;
 import com.inteligenciadigital.instagramremake.main.home.presentation.HomePresenter;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileDataSource;
+import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileFireDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.datasource.ProfileLocaDataSource;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfileFragment;
 import com.inteligenciadigital.instagramremake.main.profile.presentation.ProfilePresenter;
@@ -86,8 +88,8 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
 	@Override
 	protected void onInject() {
-		HomeDataSource homeDataSource = new HomeLocalDataSource();
-		ProfileDataSource profileDataSource = new ProfileLocaDataSource();
+		HomeDataSource homeDataSource = new HomeFireDataSource();
+		ProfileDataSource profileDataSource = new ProfileFireDataSource();
 
 		this.profilePresenter = new ProfilePresenter(profileDataSource);
 		this.homePresenter = new HomePresenter(homeDataSource);
@@ -198,7 +200,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
 	@Override
 	public void showProfile(String user) {
-		ProfileDataSource profileDataSource = new ProfileLocaDataSource();
+		ProfileDataSource profileDataSource = new ProfileFireDataSource();
 		ProfilePresenter profilePresenter = new ProfilePresenter(profileDataSource, user);
 
 		this.profileDetailFragment = ProfileFragment.newInstance(this, profilePresenter);

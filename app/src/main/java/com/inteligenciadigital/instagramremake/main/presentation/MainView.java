@@ -1,7 +1,5 @@
 package com.inteligenciadigital.instagramremake.main.presentation;
 
-import android.net.Uri;
-
 import com.inteligenciadigital.instagramremake.common.models.Feed;
 import com.inteligenciadigital.instagramremake.common.models.Post;
 import com.inteligenciadigital.instagramremake.common.models.User;
@@ -19,7 +17,7 @@ public interface MainView extends ViewProgressBar {
 
 	interface ProfileView extends ViewProgressBar {
 
-		void showPhoto(Uri uri);
+		void showPhoto(String uri);
 
 		void showData(String name, String following, String followers,
 		              String posts, boolean editProfile, boolean follow);
