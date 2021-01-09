@@ -40,6 +40,7 @@ public class LoginActivity extends AbstractActivity implements LoginView {
 		super.onCreate(savedInstanceState);
 		this.setStatusBarDark();
 
+		//FirebaseAuth.getInstance().signOut();
 		String user = FirebaseAuth.getInstance().getUid();
 		if (user != null)
 			this.onUserLogged();
