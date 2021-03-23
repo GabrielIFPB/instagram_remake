@@ -20,6 +20,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.inteligenciadigital.instagramremake.login.presentation.LoginActivity;
 import com.inteligenciadigital.instagramremake.main.camera.presentation.AddActivity;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
@@ -237,6 +238,11 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 
 		this.profileDetailFragment = null;
 
+	}
+
+	@Override
+	public void logout() {
+		LoginActivity.launch(this);
 	}
 
 	@Override

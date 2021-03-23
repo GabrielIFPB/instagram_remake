@@ -90,7 +90,7 @@ public class CameraFragment extends AbstractFragment {
 			this.progressBar.setVisibility(View.GONE);
 			this.button.setVisibility(View.VISIBLE);
 //erro
-			Uri uri = this.mediaHelper.saveCameraFile(data);
+			Uri uri = this.mediaHelper.saveCameraFile(this.getContext(), data);
 			if (uri != null)
 				this.addView.onImageLoaded(uri);
 		});
