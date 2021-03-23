@@ -50,32 +50,51 @@ public class AddFireDataSource implements AddDataSource {
 
 								postRef.set(post)
 										.addOnSuccessListener(aVoid -> {
-											FirebaseFirestore.getInstance().collection("followers")
-													.document(uid)
-													.collection("followers")
-													.get()
-													.addOnCompleteListener(task ->{
-														if (!task.isSuccessful()) {
-															return;
-														}
-														List<DocumentSnapshot> documents = task.getResult().getDocuments();
-														for (DocumentSnapshot documentSnapshot: documents) {
-															User user = documentSnapshot.toObject(User.class);
-															Feed feed = new Feed();
-															feed.setPhotoUrl(post.getPhotoUrl());
-															feed.setCaption(post.getCaption());
-															feed.setTimestamp(post.getTimestamp());
-															feed.setUuid(postRef.getId());
-															feed.setPublisher(user);
 
-															FirebaseFirestore.getInstance()
-																	.collection("feeds")
-																	.document(user.getUuid())
-																	.collection("posts")
-																	.document(postRef.getId())
-																	.set(feed);
-														}
-													});
+											DocumentReference me = FirebaseFirestore.getInstance()
+													.collection("users")
+													.document(uid);
+
+											FirebaseFirestore.getInstance().runTransaction(transaction -> {
+												DocumentSnapshot snapshot = transaction.get(me);
+												User user = snapshot.toObject(User.class);
+												int posts = user.getPosts() + 1;
+												transaction.update(me, "posts", posts);
+												return null;
+											});
+
+											me.get().addOnCompleteListener(taskUser -> {
+												if (taskUser.isSuccessful()) {
+													User myUser = taskUser.getResult().toObject(User.class);
+
+													FirebaseFirestore.getInstance().collection("followers")
+															.document(uid)
+															.collection("followers")
+															.get()
+															.addOnCompleteListener(task -> {
+																if (!task.isSuccessful()) {
+																	return;
+																}
+																List<DocumentSnapshot> documents = task.getResult().getDocuments();
+																for (DocumentSnapshot documentSnapshot : documents) {
+																	User user = documentSnapshot.toObject(User.class);
+																	Feed feed = new Feed();
+																	feed.setPhotoUrl(post.getPhotoUrl());
+																	feed.setCaption(post.getCaption());
+																	feed.setTimestamp(post.getTimestamp());
+																	feed.setUuid(postRef.getId());
+																	feed.setPublisher(myUser);
+
+																	FirebaseFirestore.getInstance()
+																			.collection("feeds")
+																			.document(user.getUuid())
+																			.collection("posts")
+																			.document(postRef.getId())
+																			.set(feed);
+																}
+															});
+												}
+											});
 
 
 											String id = postRef.getId();
