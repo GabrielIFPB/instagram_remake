@@ -14,11 +14,11 @@ public class User {
 	private String photoUrl;
 
 	public String getUuid() {
-		return uuid;
+		return this.uuid;
 	}
 
 	public Uri getUri() {
-		return uri;
+		return this.uri;
 	}
 
 	public void setUri(Uri uri) {
@@ -30,7 +30,7 @@ public class User {
 	}
 
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
@@ -38,7 +38,7 @@ public class User {
 	}
 
 	public String getEmail() {
-		return email;
+		return this.email;
 	}
 
 	public void setEmail(String email) {
@@ -46,7 +46,7 @@ public class User {
 	}
 
 	public int getFollowing() {
-		return following;
+		return this.following;
 	}
 
 	public void setFollowing(int following) {
@@ -54,7 +54,7 @@ public class User {
 	}
 
 	public int getFollowers() {
-		return followers;
+		return this.followers;
 	}
 
 	public void setFollowers(int followers) {
@@ -62,7 +62,7 @@ public class User {
 	}
 
 	public int getPosts() {
-		return posts;
+		return this.posts;
 	}
 
 	public void setPosts(int posts) {

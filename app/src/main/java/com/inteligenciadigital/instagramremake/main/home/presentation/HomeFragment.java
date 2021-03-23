@@ -141,15 +141,15 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
 		public FeedViewHolder(@NonNull View itemView) {
 			super(itemView);
-			this.imagePost = itemView.findViewById(R.id.profile_image_grid);
+			this.imagePost = itemView.findViewById(R.id.profile_image_list);
 			this.imageUser = itemView.findViewById(R.id.home_container_user_photo);
 			this.textViewCaption = itemView.findViewById(R.id.home_container_user_caption);
 			this.textViewUsername = itemView.findViewById(R.id.home_container_user_username);
 		}
 
 		public void bind(Feed feed) {
-			Glide.with(itemView.getContext()).load(feed.getPhotoUrl()).into(this.imageUser);
-			this.imagePost.setImageURI(feed.getUri());
+			Glide.with(this.itemView.getContext()).load(feed.getPhotoUrl()).into(this.imagePost);
+//			this.imagePost.setImageURI(feed.getUri());
 			this.textViewCaption.setText(feed.getCaption());
 
 			User user = feed.getPublisher();

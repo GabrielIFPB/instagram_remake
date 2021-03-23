@@ -15,7 +15,8 @@ public class HomeFireDataSource implements HomeDataSource {
 	@Override
 	public void findFeed(Presenter<List<Feed>> presenter) {
 		String uuid = FirebaseAuth.getInstance().getUid();
-		FirebaseFirestore.getInstance().collection("users")
+
+		FirebaseFirestore.getInstance().collection("feeds")
 				.document(uuid)
 				.collection("posts")
 				.orderBy("timestamp", Query.Direction.DESCENDING)
