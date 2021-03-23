@@ -113,7 +113,7 @@ public class MainActivity extends AbstractActivity implements MainView, BottomNa
 				.hide(this.searchFragment).commit();
 
 		fragmentManager.beginTransaction().add(R.id.main_fragment, this.homeFragment)
-				.show(this.homeFragment).commit();
+				.commit();
 
 	}
 
