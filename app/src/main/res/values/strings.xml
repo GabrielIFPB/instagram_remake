@@ -43,4 +43,5 @@
 	<string name="logout">Deseja sair?</string>
 	<string name="logout_action">Sair</string>
 	<string name="cancel">Cancel</string>
+	<string name="imagem_do_post">Imagem do post</string>
 </resources>

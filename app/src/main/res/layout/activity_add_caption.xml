@@ -34,7 +34,8 @@
 			android:layout_width="64dp"
 			android:layout_height="64dp"
 			android:scaleType="centerCrop"
-			tools:srcCompat="@tools:sample/backgrounds/scenic" />
+			tools:srcCompat="@tools:sample/backgrounds/scenic"
+			android:contentDescription="@string/imagem_do_post" />
 
 		<EditText
 			android:id="@+id/main_add_caption_edit_text"
@@ -42,7 +43,9 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
-			android:hint="@string/write_caption" />
+			android:inputType="text"
+			android:hint="@string/write_caption"
+			android:autofillHints="" />
 
 	</LinearLayout>
 

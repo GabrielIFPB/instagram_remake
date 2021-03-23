@@ -11,7 +11,7 @@ public class Post {
 	private String photoUrl;
 
 	public String getUuid() {
-		return uuid;
+		return this.uuid;
 	}
 
 	public void setUuid(String uuid) {
@@ -19,7 +19,7 @@ public class Post {
 	}
 
 	public Uri getUri() {
-		return uri;
+		return this.uri;
 	}
 
 	public void setUri(Uri uri) {
@@ -35,7 +35,7 @@ public class Post {
 	}
 
 	public long getTimestamp() {
-		return timestamp;
+		return this.timestamp;
 	}
 
 	public void setTimestamp(long timestamp) {
@@ -43,7 +43,7 @@ public class Post {
 	}
 
 	public String getPhotoUrl() {
-		return photoUrl;
+		return this.photoUrl;
 	}
 
 	public void setPhotoUrl(String photoUrl) {
