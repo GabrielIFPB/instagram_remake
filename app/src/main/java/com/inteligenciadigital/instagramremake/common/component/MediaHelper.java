@@ -85,6 +85,13 @@ public class MediaHelper {
 	}
 
 	public void chooserCamera() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+			if (this.getContext() !=null && this.getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+				this.activity.requestPermissions(new String[] {Manifest.permission.CAMERA}, CropImage.CAMERA_CAPTURE_PERMISSIONS_REQUEST_CODE);
+				return;
+			}
+		}
+
 		Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 		PackageManager packageManager = this.getContext().getPackageManager();
 		if (intent.resolveActivity(packageManager) != null) {
@@ -194,15 +201,16 @@ public class MediaHelper {
 		return context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA);
 	}
 
-	public Camera getCameraInstance() {
+	public Camera getCameraInstance(Fragment fragment, Context context) {
 		Camera camera = null;
 		try {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				if (this.getContext() != null && this.getContext().checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-					if (this.activity != null)
-						this.activity.requestPermissions(new String[] { Manifest.permission.CAMERA }, 300);
-					else
+				if (fragment != null && context.checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+//					if (this.activity != null)
+//						this.activity.requestPermissions(new String[] { Manifest.permission.CAMERA }, 300);
+//					else
 						this.fragment.requestPermissions(new String[] { Manifest.permission.CAMERA }, 300);
+						return null;
 				}
 			}
 			camera = Camera.open();
@@ -225,7 +233,7 @@ public class MediaHelper {
 			FileOutputStream fileOutputStream = new FileOutputStream(pictureFile);
 
 			Bitmap realImage = BitmapFactory.decodeByteArray(data, 0, data.length);
-
+//erro
 			ExifInterface exifInterface = new ExifInterface(pictureFile.toString());
 
 			Log.d("TESTE", exifInterface.getAttribute(ExifInterface.TAG_ORIENTATION));

@@ -107,6 +107,11 @@ public class AddActivity extends AbstractActivity implements AddView {
 	}
 
 	@Override
+	public void dispose() {
+		this.finish();
+	}
+
+	@Override
 	protected int getLayout() {
 		return R.layout.activity_add;
 	}

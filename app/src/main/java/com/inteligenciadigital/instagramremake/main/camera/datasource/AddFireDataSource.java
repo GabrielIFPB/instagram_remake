@@ -72,7 +72,7 @@ public class AddFireDataSource implements AddDataSource {
 																	.collection("feeds")
 																	.document(user.getUuid())
 																	.collection("posts")
-																	.document(postRef.getPath())
+																	.document(postRef.getId())
 																	.set(feed);
 														}
 													});
