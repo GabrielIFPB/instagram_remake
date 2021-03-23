@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.models.User;
 import com.inteligenciadigital.instagramremake.common.view.AbstractFragment;
@@ -133,7 +134,7 @@ public class SearchFragment extends AbstractFragment<SearchPresenter> implements
 		}
 
 		public void bind(User user) {
-			this.imageUser.setImageURI(user.getUri());
+			Glide.with(this.itemView.getContext()).load(user.getPhotoUrl()).into(this.imageUser);
 			this.textViewName.setText(user.getName());
 			this.textViewUsername.setText(user.getName());
 		}

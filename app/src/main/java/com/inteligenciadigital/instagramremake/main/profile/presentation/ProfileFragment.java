@@ -232,7 +232,7 @@ public class ProfileFragment extends AbstractFragment<ProfilePresenter> implemen
 		}
 
 		public void bind(Post post) {
-			Glide.with(this.itemView.getContext()).load(post.getUri()).into(this.imagePost);
+			Glide.with(this.itemView.getContext()).load(post.getPhotoUrl()).into(this.imagePost);
 		}
 	}
 }

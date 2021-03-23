@@ -154,6 +154,7 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 
 			User user = feed.getPublisher();
 			if (user != null) {
+				Glide.with(this.itemView.getContext()).load(user.getPhotoUrl()).into(this.imageUser);
 				this.imageUser.setImageURI(user.getUri());
 				this.textViewUsername.setText(user.getName());
 			}

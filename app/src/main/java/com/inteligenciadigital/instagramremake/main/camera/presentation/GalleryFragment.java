@@ -1,5 +1,6 @@
 package com.inteligenciadigital.instagramremake.main.camera.presentation;
 
+import android.Manifest;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -69,6 +70,9 @@ public class GalleryFragment extends AbstractFragment<GalleryPresenter> implemen
 	@Override
 	public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+//		requestPermissions(new String[] {Manifest.permission.READ_EXTERNAL_STORAGE}, 0);
+
 		this.presenter.findPictures(this.getContext());
 	}
 

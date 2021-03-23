@@ -12,12 +12,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.Toolbar;
 
 import com.inteligenciadigital.instagramremake.R;
 import com.inteligenciadigital.instagramremake.common.view.AbstractActivity;
+import com.inteligenciadigital.instagramremake.main.camera.datasource.AddDataSource;
+import com.inteligenciadigital.instagramremake.main.camera.datasource.AddFireDataSource;
 import com.inteligenciadigital.instagramremake.main.camera.datasource.AddLocalDataSource;
 
 import butterknife.BindView;
@@ -29,6 +32,9 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 
 	@BindView(R.id.main_add_caption_edit_text)
 	EditText editText;
+
+	@BindView(R.id.add_progress)
+	ProgressBar progressBar;
 
 	private Uri uri;
 	private AddPresenter presesnter;
@@ -61,8 +67,18 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 		uri = this.getIntent().getExtras().getParcelable("uri");
 		this.imageView.setImageURI(this.uri);
 
-		AddLocalDataSource dataSource = new AddLocalDataSource();
+		AddDataSource dataSource = new AddFireDataSource();
 		this.presesnter = new AddPresenter(this, dataSource);
+	}
+
+	@Override
+	public void showProgressBar() {
+		this.progressBar.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	public void hideProgressBar() {
+		this.progressBar.setVisibility(View.GONE);
 	}
 
 	@Override
@@ -79,7 +95,7 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 				return true;
 			case R.id.action_share:
 				this.presesnter.createPost(this.uri, this.editText.getText().toString());
-				this.finish();
+//				this.finish();
 				return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -92,6 +108,6 @@ public class AddCaptionActivity extends AbstractActivity implements AddCaptionVi
 
 	@Override
 	public void postSaved() {
-
+		this.finish();
 	}
 }
