@@ -220,8 +220,8 @@ public class MediaHelper {
 		return camera;
 	}
 
-	public Uri saveCameraFile(byte[] data) {
-		File pictureFile = this.createCameraFile(true);
+	public Uri saveCameraFile(Context context, byte[] data) {
+		File pictureFile = this.createCameraFile(context, true);
 
 		if (pictureFile == null) {
 			Log.d("TESTE", "Error creating media file, check storage permission");
@@ -251,7 +251,7 @@ public class MediaHelper {
 			fileOutputStream.close();
 
 			Matrix matrix = new Matrix();
-			outputMediaFile = this.createCameraFile(false);
+			outputMediaFile = this.createCameraFile(context,false);
 
 			if (outputMediaFile == null) {
 				Log.d("TESTE", "Error creating media file, check storage permissions");
@@ -284,10 +284,10 @@ public class MediaHelper {
 		return Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
 	}
 
-	private File createCameraFile(boolean temp) {
+	private File createCameraFile(Context context, boolean temp) {
 		if (this.getContext() == null) return null;
 
-		File mediaStorageDir = this.getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+		File mediaStorageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 		if (mediaStorageDir != null && !mediaStorageDir.exists()) {
 			if (!mediaStorageDir.mkdirs()) {
 				Log.d("TESTE", "failed to create directory");

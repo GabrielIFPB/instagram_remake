@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -17,7 +18,9 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.inteligenciadigital.instagramremake.R;
+import com.inteligenciadigital.instagramremake.common.component.CustomDialog;
 import com.inteligenciadigital.instagramremake.common.models.Feed;
 import com.inteligenciadigital.instagramremake.common.models.Post;
 import com.inteligenciadigital.instagramremake.common.models.User;
@@ -72,6 +75,28 @@ public class HomeFragment extends AbstractFragment<HomePresenter> implements Mai
 		this.recyclerView.setAdapter(this.feedAdapter);
 
 		return view;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+		switch (item.getItemId()) {
+			case R.id.menu_settongs:
+				CustomDialog customDialog = new CustomDialog.Builder(this.getContext())
+						.setTitle(R.string.logout)
+						.addButton((v) -> {
+							switch (v.getId()) {
+								case R.string.logout_action:
+									FirebaseAuth.getInstance().signOut();
+									mainView.logout();
+									break;
+								case R.string.cancel:
+									break;
+							}
+						}, R.string.logout_action, R.string.cancel).build();
+				customDialog.show();
+				return true;
+		}
+		return super.onOptionsItemSelected(item);
 	}
 
 	@Override

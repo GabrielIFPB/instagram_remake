@@ -15,6 +15,8 @@ public interface MainView extends ViewProgressBar {
 
 	void disposeProfileDetail();
 
+	void logout();
+
 	interface ProfileView extends ViewProgressBar {
 
 		void showPhoto(String uri);
